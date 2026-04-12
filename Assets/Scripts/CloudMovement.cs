@@ -2,7 +2,7 @@ using UnityEngine;
 
 [DefaultExecutionOrder(100)]
 [RequireComponent(typeof(BoxCollider2D), typeof(Rigidbody2D))]
-public class Cloud_Movement : MonoBehaviour
+public class CloudMovement : MonoBehaviour
 {
     public string playerTag = "Player";
     public float lowerDistance = 1.5f;
