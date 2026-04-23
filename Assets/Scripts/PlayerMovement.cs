@@ -1,9 +1,33 @@
+using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(Rigidbody2D))]
 public class PlayerMovement : MonoBehaviour
 {
+    [Serializable]
+    public class SavedState
+    {
+        public Vector2 position;
+        public Vector2 velocity;
+        public bool facingRight;
+
+        public float moveSpeed;
+        public float acceleration;
+        public float deceleration;
+        public float jumpForce;
+        public int extraJumps;
+        public float coyoteTime;
+        public float jumpBufferTime;
+        public float groundCheckRadius;
+
+        public int jumpsLeft;
+        public float coyoteTimeCounter;
+        public float jumpBufferCounter;
+    }
+
+    const string StateKey = "player_movement";
+
     [Header("Movement")]
     public float moveSpeed = 8f;
     public float acceleration = 50f;
@@ -33,6 +57,22 @@ public class PlayerMovement : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         jumpsLeft = extraJumps;
+    }
+
+    void Start()
+    {
+        RestoreState();
+        ApplyPendingSpawnPoint();
+    }
+
+    void OnDisable()
+    {
+        SaveState();
+    }
+
+    void OnDestroy()
+    {
+        SaveState();
     }
 
     void Update()
@@ -118,5 +158,99 @@ public class PlayerMovement : MonoBehaviour
             Gizmos.color = Color.red;
             Gizmos.DrawWireSphere(groundCheck.position, groundCheckRadius);
         }
+    }
+
+    void SaveState()
+    {
+        if (!GameSession.HasInstance)
+        {
+            return;
+        }
+
+        SavedState state = new SavedState
+        {
+            position = rb != null ? rb.position : (Vector2)transform.position,
+            velocity = rb != null ? rb.linearVelocity : Vector2.zero,
+            facingRight = facingRight,
+            moveSpeed = moveSpeed,
+            acceleration = acceleration,
+            deceleration = deceleration,
+            jumpForce = jumpForce,
+            extraJumps = extraJumps,
+            coyoteTime = coyoteTime,
+            jumpBufferTime = jumpBufferTime,
+            groundCheckRadius = groundCheckRadius,
+            jumpsLeft = jumpsLeft,
+            coyoteTimeCounter = coyoteTimeCounter,
+            jumpBufferCounter = jumpBufferCounter
+        };
+
+        GameSession.Instance.SaveState(StateKey, state);
+    }
+
+    void RestoreState()
+    {
+        if (!GameSession.HasInstance)
+        {
+            return;
+        }
+
+        if (!GameSession.Instance.TryLoadState(StateKey, out SavedState state))
+        {
+            return;
+        }
+
+        moveSpeed = state.moveSpeed;
+        acceleration = state.acceleration;
+        deceleration = state.deceleration;
+        jumpForce = state.jumpForce;
+        extraJumps = state.extraJumps;
+        coyoteTime = state.coyoteTime;
+        jumpBufferTime = state.jumpBufferTime;
+        groundCheckRadius = state.groundCheckRadius;
+
+        facingRight = state.facingRight;
+        jumpsLeft = state.jumpsLeft;
+        coyoteTimeCounter = state.coyoteTimeCounter;
+        jumpBufferCounter = state.jumpBufferCounter;
+
+        if (rb != null)
+        {
+            rb.position = state.position;
+            rb.linearVelocity = state.velocity;
+        }
+
+        transform.position = state.position;
+
+        float scaleX = Mathf.Abs(transform.localScale.x);
+        Vector3 scale = transform.localScale;
+        scale.x = facingRight ? scaleX : -scaleX;
+        transform.localScale = scale;
+    }
+
+    void ApplyPendingSpawnPoint()
+    {
+        if (!GameSession.HasInstance)
+        {
+            return;
+        }
+
+        if (!GameSession.Instance.TryConsumePendingSpawnPoint(out string spawnPointId))
+        {
+            return;
+        }
+
+        if (!SceneSpawnPoint.TryGetSpawnPosition(spawnPointId, out Vector3 spawnPosition))
+        {
+            return;
+        }
+
+        if (rb != null)
+        {
+            rb.position = spawnPosition;
+            rb.linearVelocity = Vector2.zero;
+        }
+
+        transform.position = spawnPosition;
     }
 }
