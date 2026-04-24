@@ -51,21 +51,18 @@ namespace TheAlchemest.UI
         public void OnMasterVolumeChanged(float value)
         {
             masterVolume = value;
-            // TODO: Apply volume to all audio sources.
             Debug.Log($"Master Volume: {masterVolume}");
         }
 
         public void OnMusicVolumeChanged(float value)
         {
             musicVolume = value;
-            // TODO: Apply volume to music bus.
             Debug.Log($"Music Volume: {musicVolume}");
         }
 
         public void OnSfxVolumeChanged(float value)
         {
             sfxVolume = value;
-            // TODO: Apply volume to SFX bus.
             Debug.Log($"SFX Volume: {sfxVolume}");
         }
 

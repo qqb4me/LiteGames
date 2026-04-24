@@ -51,7 +51,6 @@ public class CloudMovement : MonoBehaviour
         Vector2 delta = next - prevPos;
         if (standingPlayer != null)
         {
-            // Do not override jump ascent; carry only while player is not moving upward.
             if (standingPlayer.linearVelocity.y <= 0.01f)
             {
                 Vector2 projectedPlayerPos = standingPlayer.position + standingPlayer.linearVelocity * Time.fixedDeltaTime;

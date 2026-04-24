@@ -35,7 +35,7 @@ public class PlayerMovement : MonoBehaviour
 
     [Header("Jump")]
     public float jumpForce = 15f;
-    public int extraJumps = 0; // allow double jump when >0
+    public int extraJumps = 0;
     public float coyoteTime = 0.12f;
     public float jumpBufferTime = 0.12f;
 
@@ -77,7 +77,6 @@ public class PlayerMovement : MonoBehaviour
 
     void Update()
     {
-        // Read input via New Input System (keyboard + gamepad). If both present, gamepad stick takes priority.
         float kbDir = 0f;
         if (Keyboard.current != null)
         {
@@ -91,15 +90,12 @@ public class PlayerMovement : MonoBehaviour
             padDir = Gamepad.current.leftStick.ReadValue().x;
         }
 
-        // prefer gamepad stick when it's active, otherwise keyboard
         horizontalInput = Mathf.Abs(padDir) > 0.05f ? Mathf.Clamp(padDir, -1f, 1f) : Mathf.Clamp(kbDir, -1f, 1f);
 
-        // jump buffering using new input
         if (Keyboard.current != null && Keyboard.current.spaceKey.wasPressedThisFrame) jumpBufferCounter = jumpBufferTime;
         else if (Gamepad.current != null && Gamepad.current.buttonSouth.wasPressedThisFrame) jumpBufferCounter = jumpBufferTime;
         else jumpBufferCounter -= Time.deltaTime;
 
-        // ground check
         bool isGrounded = groundCheck != null && Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer);
 
         if (isGrounded)
@@ -112,7 +108,6 @@ public class PlayerMovement : MonoBehaviour
             coyoteTimeCounter -= Time.deltaTime;
         }
 
-        // jump when buffered and allowed
         if (jumpBufferCounter > 0f)
         {
             if (coyoteTimeCounter > 0f || jumpsLeft > 0)
@@ -122,7 +117,6 @@ public class PlayerMovement : MonoBehaviour
             }
         }
 
-        // flip sprite
         if (horizontalInput > 0.1f && !facingRight) Flip();
         else if (horizontalInput < -0.1f && facingRight) Flip();
     }
