@@ -1229,11 +1229,11 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 27910552}
-  - {fileID: 1281533391}
-  - {fileID: 831051750}
-  - {fileID: 681916029}
   - {fileID: 475671439}
+  - {fileID: 681916029}
+  - {fileID: 831051750}
+  - {fileID: 1281533391}
+  - {fileID: 27910552}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &944290795
@@ -1249,8 +1249,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ParallaxBackground
   mainCamera: {fileID: 519420031}
-  parallaxStrength: 0.25
-  closestLayerParallax: 0.85
+  parallaxStrength: 0.15
+  closestLayerParallax: 0.95
   useLayerDepth: 1
   moveOnY: 0
   includeOnlySpriteRenderers: 1
@@ -1620,7 +1620,7 @@ Transform:
   m_GameObject: {fileID: 1546755841}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2.013, y: 10.751, z: 0}
+  m_LocalPosition: {x: 1, y: 3, z: 0}
   m_LocalScale: {x: 4, y: 4, z: 4}
   m_ConstrainProportionsScale: 0
   m_Children:

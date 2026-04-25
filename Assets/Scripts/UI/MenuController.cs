@@ -11,11 +11,13 @@ public class MenuController : MonoBehaviour
     [SerializeField] GameObject settingsPanel;
     [SerializeField] Button playButton;
     [SerializeField] Button settingsButton;
-    [SerializeField] Button quitButton;
     [SerializeField] Button closeSettingsButton;
     [SerializeField] Slider masterVolumeSlider;
     [SerializeField] Slider musicVolumeSlider;
     [SerializeField] Slider sfxVolumeSlider;
+
+    [Header("Scene Names")]
+    [SerializeField] string newGameSceneName = "AlchemistHome";
 
     [Header("Behavior")]
     [SerializeField] bool autoCreateEventSystem = true;
@@ -51,7 +53,12 @@ public class MenuController : MonoBehaviour
 
     public void PlayGame()
     {
-        GameSession.LoadScene("AlchemistHome");
+        if (TheAlchemest.UI.PersistentGameUi.TryResumeFromMainMenu())
+        {
+            return;
+        }
+
+        GameSession.LoadScene(newGameSceneName);
     }
 
     public void OpenSettings()
@@ -80,15 +87,6 @@ public class MenuController : MonoBehaviour
         }
     }
 
-    public void QuitGame()
-    {
-#if UNITY_EDITOR
-        UnityEditor.EditorApplication.isPlaying = false;
-#else
-        Application.Quit();
-#endif
-    }
-
     bool TryInitializeSceneUi()
     {
         TryResolveReferences();
@@ -100,7 +98,6 @@ public class MenuController : MonoBehaviour
 
         BindButton(playButton, PlayGame);
         BindButton(settingsButton, OpenSettings);
-        BindButton(quitButton, QuitGame);
         BindButton(closeSettingsButton, CloseSettings);
 
         if (settingsPanel != null)
@@ -112,6 +109,9 @@ public class MenuController : MonoBehaviour
         {
             mainMenuPanel.SetActive(true);
         }
+
+        HideLegacyQuitButton();
+        RefreshPlayButtonLabel();
 
         TheAlchemest.UI.AudioSettings audioSettings = GetComponent<TheAlchemest.UI.AudioSettings>();
         if (audioSettings == null)
@@ -140,7 +140,6 @@ public class MenuController : MonoBehaviour
             && settingsPanel != null
             && playButton != null
             && settingsButton != null
-            && quitButton != null
             && closeSettingsButton != null;
     }
 
@@ -170,11 +169,35 @@ public class MenuController : MonoBehaviour
         settingsPanel ??= FindObjectByName<RectTransform>("SettingsPanel")?.gameObject;
         playButton ??= FindObjectByName<Button>("PlayButton");
         settingsButton ??= FindObjectByName<Button>("SettingsButton");
-        quitButton ??= FindObjectByName<Button>("QuitButton");
         closeSettingsButton ??= FindObjectByName<Button>("CloseButton");
         masterVolumeSlider ??= FindSliderByName("MasterVolumeSlider");
         musicVolumeSlider ??= FindSliderByName("MusicVolumeSlider");
         sfxVolumeSlider ??= FindSliderByName("SfxVolumeSlider");
+    }
+
+    void HideLegacyQuitButton()
+    {
+        Button legacyQuitButton = FindObjectByName<Button>("QuitButton");
+        if (legacyQuitButton != null)
+        {
+            legacyQuitButton.gameObject.SetActive(false);
+        }
+    }
+
+    void RefreshPlayButtonLabel()
+    {
+        if (playButton == null)
+        {
+            return;
+        }
+
+        Text label = playButton.GetComponentInChildren<Text>(true);
+        if (label == null)
+        {
+            return;
+        }
+
+        label.text = TheAlchemest.UI.PersistentGameUi.HasResumableSession ? "CONTINUE" : "PLAY";
     }
 
     T FindObjectByName<T>(string objectName) where T : Component
@@ -227,7 +250,6 @@ public class MenuController : MonoBehaviour
             && FindObjectByName<RectTransform>("SettingsPanel") != null
             && FindObjectByName<Button>("PlayButton") != null
             && FindObjectByName<Button>("SettingsButton") != null
-            && FindObjectByName<Button>("QuitButton") != null
             && FindObjectByName<Button>("CloseButton") != null)
         {
             return;
@@ -247,13 +269,12 @@ public class MenuController : MonoBehaviour
         Transform root = canvasObject.transform;
 
         CreatePanel(root, "Background", new Vector2(0, 0), new Vector2(1, 1), Vector2.zero, Vector2.zero, new Color(0.08f, 0.09f, 0.14f, 1f));
-        mainMenuPanel = CreatePanel(root, "MenuPanel", new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), Vector2.zero, new Vector2(560, 360), new Color(0.13f, 0.15f, 0.2f, 0.92f));
+        mainMenuPanel = CreatePanel(root, "MenuPanel", new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), Vector2.zero, new Vector2(560, 320), new Color(0.13f, 0.15f, 0.2f, 0.92f));
 
         CreateLabel(mainMenuPanel.transform, "Title", "THE ALCHEMIST", 56, new Vector2(0.5f, 0.8f), new Vector2(460, 80), new Color(0.96f, 0.91f, 0.78f, 1f));
 
-        playButton = CreateButton(mainMenuPanel.transform, "PlayButton", "PLAY", new Vector2(0.5f, 0.58f), new Vector2(280, 60), new Color(0.22f, 0.55f, 0.3f, 1f));
-        settingsButton = CreateButton(mainMenuPanel.transform, "SettingsButton", "SETTINGS", new Vector2(0.5f, 0.42f), new Vector2(280, 60), new Color(0.22f, 0.34f, 0.55f, 1f));
-        quitButton = CreateButton(mainMenuPanel.transform, "QuitButton", "QUIT", new Vector2(0.5f, 0.26f), new Vector2(280, 60), new Color(0.52f, 0.2f, 0.2f, 1f));
+        playButton = CreateButton(mainMenuPanel.transform, "PlayButton", "PLAY", new Vector2(0.5f, 0.54f), new Vector2(280, 60), new Color(0.22f, 0.55f, 0.3f, 1f));
+        settingsButton = CreateButton(mainMenuPanel.transform, "SettingsButton", "SETTINGS", new Vector2(0.5f, 0.34f), new Vector2(280, 60), new Color(0.22f, 0.34f, 0.55f, 1f));
 
         settingsPanel = CreatePanel(root, "SettingsPanel", new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), Vector2.zero, new Vector2(700, 500), new Color(0.11f, 0.12f, 0.17f, 0.97f));
         settingsPanel.SetActive(false);

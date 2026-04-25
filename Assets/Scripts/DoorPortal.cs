@@ -61,11 +61,6 @@ public class DoorPortal : MonoBehaviour
             pressed |= Keyboard.current.eKey.wasPressedThisFrame;
         }
 
-        if (Gamepad.current != null)
-        {
-            pressed |= Gamepad.current.buttonSouth.wasPressedThisFrame;
-        }
-
         if (!pressed)
         {
             return;

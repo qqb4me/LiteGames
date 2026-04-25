@@ -84,16 +84,9 @@ public class PlayerMovement : MonoBehaviour
             if (Keyboard.current.dKey.isPressed || Keyboard.current.rightArrowKey.isPressed) kbDir += 1f;
         }
 
-        float padDir = 0f;
-        if (Gamepad.current != null)
-        {
-            padDir = Gamepad.current.leftStick.ReadValue().x;
-        }
-
-        horizontalInput = Mathf.Abs(padDir) > 0.05f ? Mathf.Clamp(padDir, -1f, 1f) : Mathf.Clamp(kbDir, -1f, 1f);
+        horizontalInput = Mathf.Clamp(kbDir, -1f, 1f);
 
         if (Keyboard.current != null && Keyboard.current.spaceKey.wasPressedThisFrame) jumpBufferCounter = jumpBufferTime;
-        else if (Gamepad.current != null && Gamepad.current.buttonSouth.wasPressedThisFrame) jumpBufferCounter = jumpBufferTime;
         else jumpBufferCounter -= Time.deltaTime;
 
         bool isGrounded = groundCheck != null && Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer);
