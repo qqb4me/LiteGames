@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 6b30d969200c58948ae8eaa4a6b94e57
+guid: aea29377ec9ad6141ac2b8fcf0a7c6dd
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 5336352871337838974
-    second: witCOyJVr3llWjz495Zd2vAltqI4O9iQ6I3QdXu49Y8kFWgMg5u15Q03sYPbWDjvFmQVMhoyfMhE-HDljex8a4ei_0
+      213: 6796481239637156656
+    second: babochka_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -113,13 +113,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: witCOyJVr3llWjz495Zd2vAltqI4O9iQ6I3QdXu49Y8kFWgMg5u15Q03sYPbWDjvFmQVMhoyfMhE-HDljex8a4ei_0
+      name: babochka_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 1024
-        height: 1024
+        width: 32
+        height: 32
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -128,8 +128,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: e794a3cc9a88e0a40800000000000000
-      internalID: 5336352871337838974
+      spriteID: 033ed2b9da3f15e50800000000000000
+      internalID: 6796481239637156656
       vertices: []
       indices: 
       edges: []
@@ -148,7 +148,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      witCOyJVr3llWjz495Zd2vAltqI4O9iQ6I3QdXu49Y8kFWgMg5u15Q03sYPbWDjvFmQVMhoyfMhE-HDljex8a4ei_0: 5336352871337838974
+      babochka_0: 6796481239637156656
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
