@@ -8,9 +8,6 @@ public class CauldronInteractable : MonoBehaviour
     private bool _isPlayerInside = false;
     private bool _isUnlocked = false;
 
-    [Header("Interaction Settings")]
-    [SerializeField] private KeyCode interactKey = KeyCode.E;
-    
     [Header("Scene Settings")]
     [SerializeField] private string targetSceneName = "PuzzleScene";
 
@@ -21,13 +18,11 @@ public class CauldronInteractable : MonoBehaviour
 
     void Update()
     {
-        // Проверяем, разблокирован ли котелок (все ингредиенты собраны)
         if (_inventoryManager != null)
         {
             _isUnlocked = _inventoryManager.AreAllIngredientsCollected();
         }
 
-        // Если игрок рядом, котелок разблокирован и нажата кнопка E
         if (_isPlayerInside && _isUnlocked && Keyboard.current != null && Keyboard.current.eKey.wasPressedThisFrame)
         {
             Interact();
@@ -52,6 +47,12 @@ public class CauldronInteractable : MonoBehaviour
 
     void Interact()
     {
+        if (!Application.CanStreamedLevelBeLoaded(targetSceneName))
+        {
+            Debug.LogWarning($"Сцена '{targetSceneName}' не добавлена в Build Settings. Добавь её в File -> Build Profiles или подставь сцену-заглушку.");
+            return;
+        }
+
         Debug.Log("Переход к головоломке через котелок!");
         SceneManager.LoadScene(targetSceneName);
     }

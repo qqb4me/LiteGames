@@ -17,5 +17,8 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Scene_Quest_Ingredients.unity
     guid: 64613efbb9b803a408fe69d2f8279e09
+  - enabled: 1
+    path: Assets/Scenes/PuzzleScene.unity
+    guid: 5c1d8cf55de44034fbe6a703c8bd8969
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
