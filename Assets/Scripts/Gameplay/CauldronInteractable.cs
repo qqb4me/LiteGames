@@ -13,7 +13,7 @@ public class CauldronInteractable : MonoBehaviour
 
     void Start()
     {
-        _inventoryManager = FindObjectOfType<GameInventoryManager>();
+        _inventoryManager = FindAnyObjectByType<GameInventoryManager>();
     }
 
     void Update()
