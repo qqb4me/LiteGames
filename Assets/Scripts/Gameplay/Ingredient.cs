@@ -16,7 +16,7 @@ public class Ingredient : MonoBehaviour
 
     private void Collect()
     {
-        GameInventoryManager manager = FindObjectOfType<GameInventoryManager>();
+        GameInventoryManager manager = FindAnyObjectByType<GameInventoryManager>();
         if (manager != null)
         {
             manager.AddIngredient();
