@@ -374,7 +374,7 @@ public class PuzzleSceneManager : MonoBehaviour
 
         Button close = CreateOverlayButton(panel.transform, "В меню", new Vector2(0.5f, 0.2f), () =>
         {
-            SceneManager.LoadScene("MainLocation");
+            SceneManager.LoadScene("MainMenu");
         });
         close.GetComponentInChildren<Text>().alignment = TextAnchor.MiddleCenter;
 
