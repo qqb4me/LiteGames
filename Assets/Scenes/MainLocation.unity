@@ -11319,6 +11319,52 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &126551310
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 126551312}
+  - component: {fileID: 126551311}
+  m_Layer: 0
+  m_Name: SpawnPoint_Entry
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &126551311
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 126551310}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 307c452413d006c40abb2b4caf2584df, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SceneSpawnPoint
+  spawnId: home
+  isDefaultSpawn: 1
+--- !u!4 &126551312
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 126551310}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 21.724842, y: 7.3563833, z: 0}
+  m_LocalScale: {x: 3.50524, y: 4.29144, z: 3.1423}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &127531761
 GameObject:
   m_ObjectHideFlags: 0
@@ -14428,6 +14474,7 @@ GameObject:
   - component: {fileID: 157759406}
   - component: {fileID: 157759405}
   - component: {fileID: 157759409}
+  - component: {fileID: 157759410}
   m_Layer: 0
   m_Name: door (3)
   m_TagString: Untagged
@@ -14448,7 +14495,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DoorPortal
   targetSceneName: PuzzleScene
-  targetSpawnPointId: street
+  targetSpawnPointId: exit
   interactionPrompt: Press E
   requirePlayerInRange: 1
 --- !u!70 &157759406
@@ -14576,10 +14623,24 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DoorWithoutE
   "\u0438\u043C\u044F\u0426\u0435\u043B\u0435\u0432\u043E\u0439\u0421\u0446\u0435\u043D\u044B": PuzzleScene
-  "\u0438\u0434\u0435\u043D\u0442\u0438\u0444\u0438\u043A\u0430\u0442\u043E\u0440\u0422\u043E\u0447\u043A\u0438\u041F\u043E\u044F\u0432\u043B\u0435\u043D\u0438\u044F": street
+  "\u0438\u0434\u0435\u043D\u0442\u0438\u0444\u0438\u043A\u0430\u0442\u043E\u0440\u0422\u043E\u0447\u043A\u0438\u041F\u043E\u044F\u0432\u043B\u0435\u043D\u0438\u044F": exit
   "\u0434\u0438\u0441\u0442\u0430\u043D\u0446\u0438\u044F\u0422\u0435\u043B\u0435\u043F\u043E\u0440\u0442\u0430\u0446\u0438\u0438": 2
   "\u0437\u0430\u0434\u0435\u0440\u0436\u043A\u0430\u0422\u0435\u043B\u0435\u043F\u043E\u0440\u0442\u0430\u0446\u0438\u0438": 0
   "\u0442\u0440\u0430\u043D\u0441\u0444\u043E\u0440\u043C\u0418\u0433\u0440\u043E\u043A\u0430": {fileID: 0}
+--- !u!114 &157759410
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 157759404}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 307c452413d006c40abb2b4caf2584df, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SceneSpawnPoint
+  spawnId: exit
+  isDefaultSpawn: 0
 --- !u!1 &158052897
 GameObject:
   m_ObjectHideFlags: 0
@@ -20484,6 +20545,52 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 727.6533, y: -1.6199992, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &260473394
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 260473396}
+  - component: {fileID: 260473395}
+  m_Layer: 0
+  m_Name: SpawnPoint_Entry (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &260473395
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 260473394}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 307c452413d006c40abb2b4caf2584df, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SceneSpawnPoint
+  spawnId: home
+  isDefaultSpawn: 1
+--- !u!4 &260473396
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 260473394}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 21.724842, y: 7.3563833, z: 0}
+  m_LocalScale: {x: 3.50524, y: 4.29144, z: 3.1423}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -141837,6 +141944,7 @@ GameObject:
   - component: {fileID: 1871418957}
   - component: {fileID: 1871418956}
   - component: {fileID: 1871418955}
+  - component: {fileID: 1871418959}
   m_Layer: 0
   m_Name: door (2)
   m_TagString: Untagged
@@ -141972,6 +142080,20 @@ Transform:
   - {fileID: 1005458380}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1871418959
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1871418954}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 307c452413d006c40abb2b4caf2584df, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SceneSpawnPoint
+  spawnId: street
+  isDefaultSpawn: 1
 --- !u!1 &1871617838
 GameObject:
   m_ObjectHideFlags: 0
@@ -160504,6 +160626,8 @@ SceneRoots:
   - {fileID: 148738288}
   - {fileID: 204143729}
   - {fileID: 1871418958}
+  - {fileID: 260473396}
+  - {fileID: 126551312}
   - {fileID: 157759408}
   - {fileID: 37544017}
   - {fileID: 1720972045}

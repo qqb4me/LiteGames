@@ -302,7 +302,7 @@ MonoBehaviour:
   m_Pos:
     serializedVersion: 2
     x: 0
-    y: 43
+    y: 0
     width: 1920
     height: 36
   m_SerializedDataModeController:
@@ -657,20 +657,14 @@ MonoBehaviour:
       m_Data: 51318
     m_ExpandedIDs:
     - m_Data: 0
-    - m_Data: 50954
-    - m_Data: 50956
-    - m_Data: 50958
-    - m_Data: 50960
-    - m_Data: 50962
-    - m_Data: 50964
-    - m_Data: 50966
-    - m_Data: 50968
-    - m_Data: 51318
-    - m_Data: 51322
-    - m_Data: 51334
-    - m_Data: 340598
-    - m_Data: 1000000000
-    - m_Data: 2147483647
+    - m_Data: 51006
+    - m_Data: 51008
+    - m_Data: 51010
+    - m_Data: 51012
+    - m_Data: 51014
+    - m_Data: 51016
+    - m_Data: 51018
+    - m_Data: 51020
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -704,14 +698,14 @@ MonoBehaviour:
       m_Data: 0
     m_ExpandedIDs:
     - m_Data: 0
-    - m_Data: 50954
-    - m_Data: 50956
-    - m_Data: 50958
-    - m_Data: 50960
-    - m_Data: 50962
-    - m_Data: 50964
-    - m_Data: 50966
-    - m_Data: 50968
+    - m_Data: 51006
+    - m_Data: 51008
+    - m_Data: 51010
+    - m_Data: 51012
+    - m_Data: 51014
+    - m_Data: 51016
+    - m_Data: 51018
+    - m_Data: 51020
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -749,8 +743,8 @@ MonoBehaviour:
     - m_Data: 51838
     m_RenameOverlay:
       m_UserAcceptedRename: 0
-      m_Name: Choose1Pick2
-      m_OriginalName: Choose1Pick2
+      m_Name: 
+      m_OriginalName: 
       m_EditFieldRect:
         serializedVersion: 2
         x: 0
@@ -758,10 +752,10 @@ MonoBehaviour:
         width: 0
         height: 0
       m_UserData:
-        m_Data: 633700
+        m_Data: 0
       m_IsWaitingForDelay: 0
       m_IsRenaming: 0
-      m_OriginalEventType: 0
+      m_OriginalEventType: 11
       m_IsRenamingFilename: 1
       m_TrimLeadingAndTrailingWhitespace: 0
       m_ClientGUIView: {fileID: 5}
@@ -798,8 +792,8 @@ MonoBehaviour:
     m_TextWithWhitespace: "Inspector\u200B"
   m_Pos:
     serializedVersion: 2
-    x: 1518
-    y: 79
+    x: 1519
+    y: 24
     width: 401
     height: 954
   m_SerializedDataModeController:
@@ -851,7 +845,7 @@ MonoBehaviour:
   m_Pos:
     serializedVersion: 2
     x: 0
-    y: 79
+    y: 24
     width: 371
     height: 656
   m_SerializedDataModeController:
@@ -920,8 +914,8 @@ MonoBehaviour:
       - m_Data: 613268
       m_RenameOverlay:
         m_UserAcceptedRename: 0
-        m_Name: door (3)
-        m_OriginalName: door (3)
+        m_Name: 
+        m_OriginalName: 
         m_EditFieldRect:
           serializedVersion: 2
           x: 0
@@ -929,10 +923,10 @@ MonoBehaviour:
           width: 0
           height: 0
         m_UserData:
-          m_Data: -162008
+          m_Data: 0
         m_IsWaitingForDelay: 0
         m_IsRenaming: 0
-        m_OriginalEventType: 0
+        m_OriginalEventType: 11
         m_IsRenamingFilename: 0
         m_TrimLeadingAndTrailingWhitespace: 0
         m_ClientGUIView: {fileID: 4}
@@ -965,8 +959,8 @@ MonoBehaviour:
     m_TextWithWhitespace: "Scene\u200B"
   m_Pos:
     serializedVersion: 2
-    x: 372
-    y: 79
+    x: 373
+    y: 24
     width: 1144
     height: 656
   m_SerializedDataModeController:
@@ -1753,7 +1747,7 @@ MonoBehaviour:
   m_Pos:
     serializedVersion: 2
     x: 0
-    y: 761
+    y: 706
     width: 1517
     height: 272
   m_SerializedDataModeController:

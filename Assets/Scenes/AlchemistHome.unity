@@ -742,6 +742,7 @@ GameObject:
   - component: {fileID: 613023680}
   - component: {fileID: 613023679}
   - component: {fileID: 613023678}
+  - component: {fileID: 613023682}
   m_Layer: 0
   m_Name: door
   m_TagString: Untagged
@@ -877,6 +878,23 @@ Transform:
   - {fileID: 46865730}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &613023682
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 613023677}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a74e2bea0709524ab3ab0d596d2b9aa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DoorWithoutE
+  "\u0438\u043C\u044F\u0426\u0435\u043B\u0435\u0432\u043E\u0439\u0421\u0446\u0435\u043D\u044B": MainLocation
+  "\u0438\u0434\u0435\u043D\u0442\u0438\u0444\u0438\u043A\u0430\u0442\u043E\u0440\u0422\u043E\u0447\u043A\u0438\u041F\u043E\u044F\u0432\u043B\u0435\u043D\u0438\u044F": street
+  "\u0434\u0438\u0441\u0442\u0430\u043D\u0446\u0438\u044F\u0422\u0435\u043B\u0435\u043F\u043E\u0440\u0442\u0430\u0446\u0438\u0438": 2
+  "\u0437\u0430\u0434\u0435\u0440\u0436\u043A\u0430\u0422\u0435\u043B\u0435\u043F\u043E\u0440\u0442\u0430\u0446\u0438\u0438": 0
+  "\u0442\u0440\u0430\u043D\u0441\u0444\u043E\u0440\u043C\u0418\u0433\u0440\u043E\u043A\u0430": {fileID: 0}
 --- !u!1 &619394800
 GameObject:
   m_ObjectHideFlags: 0
