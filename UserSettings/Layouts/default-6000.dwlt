@@ -302,7 +302,7 @@ MonoBehaviour:
   m_Pos:
     serializedVersion: 2
     x: 0
-    y: 43
+    y: 0
     width: 1920
     height: 36
   m_SerializedDataModeController:
@@ -606,7 +606,7 @@ MonoBehaviour:
   m_Pos:
     serializedVersion: 2
     x: 0
-    y: 675
+    y: 620
     width: 1255
     height: 311
   m_SerializedDataModeController:
@@ -633,7 +633,7 @@ MonoBehaviour:
     m_SkipHidden: 0
     m_SearchArea: 1
     m_Folders:
-    - Assets/Scenes
+    - Assets/Prefabs
     m_Globs: []
     m_ProductIds: 
     m_AnyWithAssetOrigin: 0
@@ -643,7 +643,7 @@ MonoBehaviour:
   m_ViewMode: 1
   m_StartGridSize: 16
   m_LastFolders:
-  - Assets/Scenes
+  - Assets/Prefabs
   m_LastFoldersGridSize: 16
   m_LastProjectPath: C:\Users\p_lap\PROJECT\LiteGames\The alchemest
   m_LockTracker:
@@ -652,14 +652,13 @@ MonoBehaviour:
   m_FolderTreeState:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs:
-    - m_Data: 51286
+    - m_Data: 51354
     m_LastClickedID:
-      m_Data: 51286
+      m_Data: 51354
     m_ExpandedIDs:
     - m_Data: 0
-    - m_Data: 50936
-    - m_Data: 50938
-    - m_Data: 1000000000
+    - m_Data: 51010
+    - m_Data: 51012
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -693,8 +692,8 @@ MonoBehaviour:
       m_Data: 0
     m_ExpandedIDs:
     - m_Data: 0
-    - m_Data: 50936
-    - m_Data: 50938
+    - m_Data: 51010
+    - m_Data: 51012
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -722,15 +721,16 @@ MonoBehaviour:
       m_Icon: {fileID: 0}
       m_ResourceFile: 
   m_ListAreaState:
-    m_SelectedInstanceIDs: []
+    m_SelectedInstanceIDs:
+    - m_Data: 51376
     m_LastClickedEntityId:
-      m_Data: 0
-    m_HadKeyboardFocusLastEvent: 1
+      m_Data: 51376
+    m_HadKeyboardFocusLastEvent: 0
     m_ExpandedInstanceIDs: []
     m_RenameOverlay:
       m_UserAcceptedRename: 0
-      m_Name: PuzzleScene
-      m_OriginalName: PuzzleScene
+      m_Name: 
+      m_OriginalName: 
       m_EditFieldRect:
         serializedVersion: 2
         x: 0
@@ -738,10 +738,10 @@ MonoBehaviour:
         width: 0
         height: 0
       m_UserData:
-        m_Data: 51302
+        m_Data: 0
       m_IsWaitingForDelay: 0
       m_IsRenaming: 0
-      m_OriginalEventType: 0
+      m_OriginalEventType: 11
       m_IsRenamingFilename: 1
       m_TrimLeadingAndTrailingWhitespace: 0
       m_ClientGUIView: {fileID: 5}
@@ -778,8 +778,8 @@ MonoBehaviour:
     m_TextWithWhitespace: "Inspector\u200B"
   m_Pos:
     serializedVersion: 2
-    x: 1256
-    y: 79
+    x: 1257
+    y: 24
     width: 663
     height: 907
   m_SerializedDataModeController:
@@ -831,7 +831,7 @@ MonoBehaviour:
   m_Pos:
     serializedVersion: 2
     x: 0
-    y: 79
+    y: 24
     width: 256
     height: 570
   m_SerializedDataModeController:
@@ -854,18 +854,6 @@ MonoBehaviour:
       m_LastClickedID:
         m_Data: 0
       m_ExpandedIDs:
-      - m_Data: -9914
-      - m_Data: -8064
-      - m_Data: -6724
-      - m_Data: -6104
-      - m_Data: -4408
-      - m_Data: -4222
-      - m_Data: -4064
-      - m_Data: -3828
-      - m_Data: -3424
-      - m_Data: -2950
-      - m_Data: -2766
-      - m_Data: -2460
       - m_Data: -1342
       m_RenameOverlay:
         m_UserAcceptedRename: 0
@@ -914,8 +902,8 @@ MonoBehaviour:
     m_TextWithWhitespace: "Scene\u200B"
   m_Pos:
     serializedVersion: 2
-    x: 257
-    y: 79
+    x: 258
+    y: 24
     width: 997
     height: 570
   m_SerializedDataModeController:
@@ -1488,9 +1476,9 @@ MonoBehaviour:
   m_AudioPlay: 0
   m_DebugDrawModesUseInteractiveLightBakingData: 0
   m_Position:
-    m_Target: {x: 17.575953, y: 8.251379, z: -0.15623169}
+    m_Target: {x: 4.9579115, y: 6.438487, z: -0.08519437}
     speed: 2
-    m_Value: {x: 17.575953, y: 8.251379, z: -0.15623169}
+    m_Value: {x: 4.9579115, y: 6.438487, z: -0.08519437}
   m_RenderMode: 0
   m_CameraMode:
     drawMode: 0
@@ -1541,9 +1529,9 @@ MonoBehaviour:
     speed: 2
     m_Value: {x: 0, y: 0, z: 0, w: 1}
   m_Size:
-    m_Target: 16.337303
+    m_Target: 18.519447
     speed: 2
-    m_Value: 16.337303
+    m_Value: 18.519447
   m_Ortho:
     m_Target: 1
     speed: 2
