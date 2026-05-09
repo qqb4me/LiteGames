@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem.UI;
 using UnityEngine.UI;
+using TMPro;
 
 public class MenuController : MonoBehaviour
 {
@@ -191,7 +192,7 @@ public class MenuController : MonoBehaviour
             return;
         }
 
-        Text label = playButton.GetComponentInChildren<Text>(true);
+        TextMeshProUGUI label = playButton.GetComponentInChildren<TextMeshProUGUI>(true);
         if (label == null)
         {
             return;

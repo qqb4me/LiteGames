@@ -20,12 +20,18 @@ public class CameraFollow : MonoBehaviour
     public Vector3 offset = new Vector3(0f, 1f, -10f);
     public float smoothTime = 0.12f;
 
+    [Header("Stability")]
+    [SerializeField] bool snapToPixelGrid = false;
+    [SerializeField] bool followTargetCenter = true;
+
     [Header("Optional Bounds")]
     public bool useBounds = false;
     public Vector2 minPosition;
     public Vector2 maxPosition;
 
     Vector3 velocity = Vector3.zero;
+    Camera cachedCamera;
+    Transform cachedTarget;
 
     void OnEnable()
     {
@@ -34,8 +40,10 @@ public class CameraFollow : MonoBehaviour
 
     void Start()
     {
+        cachedCamera = GetComponent<Camera>();
         RestoreState();
         ResolveTarget();
+        cachedTarget = target;
     }
 
     void OnDisable()
@@ -53,15 +61,30 @@ public class CameraFollow : MonoBehaviour
     {
         ResolveTarget();
 
+        if (target != cachedTarget)
+        {
+            cachedTarget = target;
+            velocity = Vector3.zero;
+        }
+
         if (target == null) return;
 
-        Vector3 targetPos = target.position + offset;
-        Vector3 newPos = Vector3.SmoothDamp(transform.position, targetPos, ref velocity, smoothTime);
+        Vector3 followPoint = GetFollowPoint(target);
+        Vector3 targetPos = followPoint + offset;
+        float followFactor = 1f - Mathf.Exp(-Mathf.Max(0.0001f, smoothTime) * Time.deltaTime * 10f);
+        Vector3 newPos = Vector3.Lerp(transform.position, targetPos, followFactor);
 
         if (useBounds)
         {
             newPos.x = Mathf.Clamp(newPos.x, minPosition.x, maxPosition.x);
             newPos.y = Mathf.Clamp(newPos.y, minPosition.y, maxPosition.y);
+        }
+
+        if (snapToPixelGrid && cachedCamera != null && cachedCamera.orthographic && cachedCamera.pixelHeight > 0)
+        {
+            float unitsPerPixel = (cachedCamera.orthographicSize * 2f) / cachedCamera.pixelHeight;
+            newPos.x = Mathf.Round(newPos.x / unitsPerPixel) * unitsPerPixel;
+            newPos.y = Mathf.Round(newPos.y / unitsPerPixel) * unitsPerPixel;
         }
 
         transform.position = new Vector3(newPos.x, newPos.y, offset.z);
@@ -70,6 +93,8 @@ public class CameraFollow : MonoBehaviour
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         ResolveTarget();
+        cachedTarget = target;
+        velocity = Vector3.zero;
         RestoreState();
     }
 
@@ -94,6 +119,28 @@ public class CameraFollow : MonoBehaviour
         {
             target = playerObject.transform;
         }
+    }
+
+    Vector3 GetFollowPoint(Transform followTarget)
+    {
+        if (!followTargetCenter || followTarget == null)
+        {
+            return followTarget != null ? followTarget.position : Vector3.zero;
+        }
+
+        Collider2D collider = followTarget.GetComponentInChildren<Collider2D>();
+        if (collider != null)
+        {
+            return collider.bounds.center;
+        }
+
+        SpriteRenderer spriteRenderer = followTarget.GetComponentInChildren<SpriteRenderer>();
+        if (spriteRenderer != null)
+        {
+            return spriteRenderer.bounds.center;
+        }
+
+        return followTarget.position;
     }
 
     void SaveState()

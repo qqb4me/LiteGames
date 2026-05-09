@@ -19,6 +19,7 @@ public class EnemyPatrol : MonoBehaviour
 
     float lastDamageTime;
     bool movingToRight = true;
+    bool canFlipVisual;
     SpriteRenderer cachedSpriteRenderer;
 
     void Awake()
@@ -30,8 +31,8 @@ public class EnemyPatrol : MonoBehaviour
     {
         if (leftPoint != null && rightPoint != null)
         {
-            movingToRight = transform.position.x <= rightPoint.position.x;
-            UpdateVisualDirection();
+            // First move to the left point without visual mirroring.
+            movingToRight = false;
         }
     }
 
@@ -55,6 +56,11 @@ public class EnemyPatrol : MonoBehaviour
 
         if (Vector3.Distance(transform.position, target) <= 0.02f)
         {
+            if (!movingToRight && !canFlipVisual)
+            {
+                canFlipVisual = true;
+            }
+
             movingToRight = !movingToRight;
             UpdateVisualDirection();
         }
@@ -114,7 +120,7 @@ public class EnemyPatrol : MonoBehaviour
 
     void UpdateVisualDirection()
     {
-        if (!autoFlipSprite)
+        if (!autoFlipSprite || !canFlipVisual)
         {
             return;
         }
@@ -132,13 +138,14 @@ public class EnemyPatrol : MonoBehaviour
 
         if (useSpriteRendererFlipX)
         {
-            cachedSpriteRenderer.flipX = !faceRight;
+            // This sprite faces left by default, so it must be mirrored when moving right.
+            cachedSpriteRenderer.flipX = faceRight;
             return;
         }
 
         Vector3 localScale = cachedSpriteRenderer.transform.localScale;
         float absX = Mathf.Abs(localScale.x);
-        localScale.x = faceRight ? absX : -absX;
+        localScale.x = faceRight ? -absX : absX;
         cachedSpriteRenderer.transform.localScale = localScale;
     }
 

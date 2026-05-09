@@ -5,6 +5,13 @@ public class GameInventoryManager : MonoBehaviour
 {
     public int totalIngredients = 5;
     private int _collectedCount = 0;
+    public event System.Action<int> OnCollectedChanged;
+
+    public int CollectedCount => _collectedCount;
+
+    [Header("UI Settings")]
+    public bool showAllCollectedMessage = true;
+    public string allCollectedMessage = "Всё готово для варки зелья";
 
     [Header("UI Settings")]
     public TextMeshProUGUI counterText;
@@ -15,6 +22,8 @@ public class GameInventoryManager : MonoBehaviour
     {
         _collectedCount++;
         UpdateUI();
+
+        OnCollectedChanged?.Invoke(_collectedCount);
 
         if (_collectedCount >= totalIngredients)
         {
@@ -30,10 +39,10 @@ public class GameInventoryManager : MonoBehaviour
 
     void OnAllCollected()
     {
-        if (counterText != null)
-            counterText.text = "Всё готово для варки зелья";
-        
-        Debug.Log("Все предметы у игрока. Всё готово для варки зелья.");
+        if (counterText != null && showAllCollectedMessage)
+            counterText.text = allCollectedMessage;
+
+        Debug.Log("Все предметы у игрока. " + (showAllCollectedMessage ? allCollectedMessage : "(сообщение отключено)."));
     }
 
     public bool AreAllIngredientsCollected()

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 [DisallowMultipleComponent]
 public class PlayerLives : MonoBehaviour
@@ -16,7 +17,7 @@ public class PlayerLives : MonoBehaviour
     [SerializeField] float knockbackVerticalSpeed = 3.5f;
 
     [Header("UI: Text (optional)")]
-    [SerializeField] Text livesText;
+    [SerializeField] TextMeshProUGUI livesText;
     [SerializeField] string livesTextFormat = "Lives: {0}/{1}";
 
     [Header("UI: Icons (optional)")]
@@ -224,6 +225,7 @@ public class PlayerLives : MonoBehaviour
         }
 
         isDead = true;
+        UpdateLivesUi();
 
         if (useDeathMenu && deathMenu != null)
         {

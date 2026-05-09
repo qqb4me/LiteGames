@@ -2,6 +2,13 @@ using UnityEngine;
 
 public class HideUntilEnoughIngredients : MonoBehaviour
 {
+    public enum HideMode
+    {
+        SetActiveFalse,
+        DisableRenderers,
+        DisableCanvasGroups
+    }
+
     [Header("Настройки")]
     [Tooltip("Сколько ингредиентов нужно собрать")]
     public int нужноИнгредиентов = 5;
@@ -11,6 +18,9 @@ public class HideUntilEnoughIngredients : MonoBehaviour
 
     [Tooltip("Проверять каждый кадр (если false - проверка только при старте и при сборе)")]
     public bool проверятьКаждыйКадр = false;
+
+    [Tooltip("Как скрывать объект: полностью отключить GameObject или только визуальные компоненты")]
+    public HideMode режимСокрытия = HideMode.DisableRenderers;
 
     private GameInventoryManager инвентарь;
     private bool ужеСкрыт = false;
@@ -32,8 +42,17 @@ public class HideUntilEnoughIngredients : MonoBehaviour
             объектДляСкрытия = gameObject;
         }
 
+        // Подписываемся на изменения (безопасно)
+        инвентарь.OnCollectedChanged += OnInventoryChanged;
+
         // Проверяем при старте
         ПроверитьИнгредиенты();
+    }
+
+    void OnDestroy()
+    {
+        if (инвентарь != null)
+            инвентарь.OnCollectedChanged -= OnInventoryChanged;
     }
 
     void Update()
@@ -44,31 +63,80 @@ public class HideUntilEnoughIngredients : MonoBehaviour
         }
     }
 
+    void OnInventoryChanged(int count)
+    {
+        ПроверитьИнгредиенты();
+    }
+
     // Этот метод можно вызывать из других скриптов (например, при сборе ингредиента)
     public void ПроверитьИнгредиенты()
     {
         if (инвентарь == null) return;
         if (ужеСкрыт) return;
 
-        // Получаем количество собранных ингредиентов через рефлексию
         int собрано = ПолучитьКоличествоИнгредиентов();
 
         if (собрано >= нужноИнгредиентов)
         {
-            // Скрываем объект
-            объектДляСкрытия.SetActive(false);
+            HideTarget();
             ужеСкрыт = true;
             Debug.Log($"Собрано {собрано}/{нужноИнгредиентов}. Объект {объектДляСкрытия.name} скрыт!");
         }
     }
 
+    private void HideTarget()
+    {
+        if (объектДляСкрытия == null) return;
+
+        switch (режимСокрытия)
+        {
+            case HideMode.SetActiveFalse:
+                объектДляСкрытия.SetActive(false);
+                break;
+
+            case HideMode.DisableRenderers:
+                var renderers = объектДляСкрытия.GetComponentsInChildren<Renderer>(true);
+                foreach (var r in renderers)
+                {
+                    r.enabled = false;
+                }
+                // также отключаем UI Graphic, если есть
+                var uis = объектДляСкрытия.GetComponentsInChildren<UnityEngine.UI.Graphic>(true);
+                foreach (var g in uis)
+                {
+                    g.enabled = false;
+                }
+                break;
+
+            case HideMode.DisableCanvasGroups:
+                var groups = объектДляСкрытия.GetComponentsInChildren<CanvasGroup>(true);
+                foreach (var cg in groups)
+                {
+                    cg.alpha = 0f;
+                    cg.interactable = false;
+                    cg.blocksRaycasts = false;
+                }
+                break;
+        }
+    }
+
     private int ПолучитьКоличествоИнгредиентов()
     {
-        // Получаем private поле _collectedCount через рефлексию
+        // Сначала пробуем публичное свойство
+        try
+        {
+            if (инвентарь != null)
+            {
+                return инвентарь.CollectedCount;
+            }
+        }
+        catch { }
+
+        // Фоллбек — старая рефлексия (если свойства нет)
         var поле = typeof(GameInventoryManager).GetField("_collectedCount",
             System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
 
-        if (поле != null)
+        if (поле != null && инвентарь != null)
         {
             return (int)поле.GetValue(инвентарь);
         }
