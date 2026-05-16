@@ -347,7 +347,7 @@ MonoBehaviour:
   masterVolumeSlider: {fileID: 210896257}
   musicVolumeSlider: {fileID: 1182026520}
   sfxVolumeSlider: {fileID: 360894595}
-  newGameSceneName: MainLocation
+  newGameSceneName: AlchemistHome
   autoCreateEventSystem: 1
   buildRuntimeUiIfMissing: 1
   autoWireInEditor: 1

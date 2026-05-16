@@ -1,4 +1,5 @@
 ﻿<Solution>
+  <Project Path="Assembly-CSharp-Editor.csproj" />
   <Project Path="Unity.Localization.csproj" />
   <Project Path="Unity.Localization.Editor.csproj" />
   <Project Path="Unity.ResourceManager.csproj" />
@@ -6,5 +7,4 @@
   <Project Path="Unity.InternalAPIEngineBridge.013.csproj" />
   <Project Path="Unity.Localization.DocCodeSamples.csproj" />
   <Project Path="Unity.InternalAPIEditorBridge.013.csproj" />
-  <Project Path="Assembly-CSharp-Editor.csproj" />
 </Solution>
