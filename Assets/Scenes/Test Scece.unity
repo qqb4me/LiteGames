@@ -155,6 +155,10 @@ PrefabInstance:
       propertyPath: m_SpriteTilingProperty.oldSize.x
       value: 3.86
       objectReference: {fileID: 0}
+    - target: {fileID: 36578160445671414, guid: 8ce8f6bd3000a76498137440e0d295ce, type: 3}
+      propertyPath: m_SpriteTilingProperty.oldSize.y
+      value: 9.46
+      objectReference: {fileID: 0}
     - target: {fileID: 1586544920644645037, guid: 8ce8f6bd3000a76498137440e0d295ce, type: 3}
       propertyPath: maxLives
       value: 2
@@ -170,7 +174,7 @@ PrefabInstance:
     - target: {fileID: 2490142461213896738, guid: 8ce8f6bd3000a76498137440e0d295ce, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: -855298285791758126, guid: 2b4d99f8e279ad947aac7dccbafbe5aa, type: 3}
+      objectReference: {fileID: 3235176974981327461, guid: 0fbd9719f8eb44e46be3b24e451d504a, type: 3}
     - target: {fileID: 2490142461213896738, guid: 8ce8f6bd3000a76498137440e0d295ce, type: 3}
       propertyPath: m_Color.a
       value: 1
@@ -260,7 +264,7 @@ PrefabInstance:
       addedObject: {fileID: 1078482619}
     - targetCorrespondingSourceObject: {fileID: 7585068700019457733, guid: 8ce8f6bd3000a76498137440e0d295ce, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 1078482627}
+      addedObject: {fileID: 1078482620}
   m_SourcePrefab: {fileID: 100100000, guid: 8ce8f6bd3000a76498137440e0d295ce, type: 3}
 --- !u!1 &131584374
 GameObject:
@@ -980,7 +984,7 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &1078482627
+--- !u!114 &1078482620
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -989,10 +993,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 1078482618}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ad2e41ce58c6378489fcd3f5fa23ce78, type: 3}
+  m_Script: {fileID: 11500000, guid: e501469df4ed452418fee051575f25f2, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PlayerMoveAnim
-  speed: 5
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerAnimator
+  moveXParam: moveX
+  moveYParam: moveY
+  transitionSpeed: 5
 --- !u!1 &1096450068
 GameObject:
   m_ObjectHideFlags: 0
