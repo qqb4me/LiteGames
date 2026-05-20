@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class PlayerAnimationController : MonoBehaviour
+public class PlayerKeyboardAnimationController_Deprecated : MonoBehaviour
 {
     private Animator animator;
 
