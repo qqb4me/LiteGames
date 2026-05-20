@@ -1,46 +1,42 @@
 using UnityEngine;
-using UnityEngine.UI;
+using TMPro;
+using UnityEngine.InputSystem;
 
-public class SimpleDialog : MonoBehaviour
+public class QuickDialog3 : MonoBehaviour
 {
-    [Header("Настройки диалога")]
-    public GameObject dialogCanvas;     
-    public Text dialogText;              
-    public string[] messages;            
-    public float showDistance = 3f;      
+    [Header("Диалоговые окна")]
+    public GameObject[] dialogCanvases = new GameObject[3];
+    public TMP_Text[] dialogTexts = new TMP_Text[3];
 
-    [Header("Управление")]
-    public KeyCode interactKey = KeyCode.E;
+    [Header("Список фраз")]
+    public DialogMessage[] messages;
 
-    private Transform player;
     private int currentMessageIndex = 0;
-    private bool isNearPlayer = false;
     private bool isDialogActive = false;
+
+    [System.Serializable]
+    public class DialogMessage
+    {
+        [Range(1, 3)]  // Ползунок от 1 до 3
+        public int dialogNumber = 1;
+
+        [TextArea(2, 4)]
+        public string message = "Текст...";
+    }
 
     void Start()
     {
-        player = GameObject.FindGameObjectWithTag("Player").transform;
-
-        if (dialogCanvas != null)
-            dialogCanvas.SetActive(false);
+        foreach (var canvas in dialogCanvases)
+        {
+            if (canvas != null) canvas.SetActive(false);
+        }
     }
 
     void Update()
     {
-        if (player != null)
+        if (Keyboard.current != null && Keyboard.current.eKey.wasPressedThisFrame)
         {
-            float distance = Vector3.Distance(transform.position, player.position);
-            isNearPlayer = distance <= showDistance;
-
-            if (isNearPlayer && Input.GetKeyDown(interactKey))
-            {
-                ToggleDialog();
-            }
-
-            if (!isNearPlayer && isDialogActive)
-            {
-                HideDialog();
-            }
+            ToggleDialog();
         }
     }
 
@@ -48,7 +44,8 @@ public class SimpleDialog : MonoBehaviour
     {
         if (!isDialogActive)
         {
-            ShowNextMessage();
+            currentMessageIndex = 0;
+            ShowCurrentMessage();
         }
         else
         {
@@ -59,34 +56,38 @@ public class SimpleDialog : MonoBehaviour
             }
             else
             {
-                HideDialog();
+                HideAllDialogs();
             }
         }
     }
 
     void ShowCurrentMessage()
     {
-        if (dialogCanvas != null && dialogText != null)
+        DialogMessage msg = messages[currentMessageIndex];
+
+        // Скрываем все окна
+        HideAllDialogs();
+
+        // Показываем выбранное окно (1, 2 или 3)
+        int index = msg.dialogNumber - 1;
+        if (index >= 0 && index < dialogCanvases.Length)
         {
-            dialogCanvas.SetActive(true);
-            dialogText.text = messages[currentMessageIndex];
-            isDialogActive = true;
+            if (dialogCanvases[index] != null && dialogTexts[index] != null)
+            {
+                dialogCanvases[index].SetActive(true);
+                dialogTexts[index].text = msg.message;
+            }
         }
+
+        isDialogActive = true;
     }
 
-    void ShowNextMessage()
+    void HideAllDialogs()
     {
-        currentMessageIndex = 0;
-        ShowCurrentMessage();
-    }
-
-    void HideDialog()
-    {
-        if (dialogCanvas != null)
+        foreach (var canvas in dialogCanvases)
         {
-            dialogCanvas.SetActive(false);
-            isDialogActive = false;
-            currentMessageIndex = 0;
+            if (canvas != null) canvas.SetActive(false);
         }
+        isDialogActive = false;
     }
 }

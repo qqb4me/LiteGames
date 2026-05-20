@@ -1,10 +1,19 @@
 fileFormatVersion: 2
-guid: c61a79c705160cf43b44fc9f7c3f443a
+guid: e418d612435d8c246b5b71649e380434
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 8793211373666208131
-    second: "\u0434\u0438\u0430\u043B\u043E\u0433\u043E\u0432\u043E\u0435 \u043E\u043A\u043D\u043E_0"
+      213: -9170861878715684554
+    second: baterfly_anim_rev_0
+  - first:
+      213: -5166312835266992423
+    second: baterfly_anim_rev_1
+  - first:
+      213: -3554068413274509551
+    second: baterfly_anim_rev_2
+  - first:
+      213: 3255595574330251155
+    second: baterfly_anim_rev_3
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -37,7 +46,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 0
+    filterMode: 1
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -113,12 +122,34 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: "\u0434\u0438\u0430\u043B\u043E\u0433\u043E\u0432\u043E\u0435 \u043E\u043A\u043D\u043E_0"
+      name: baterfly_anim_rev_0
       rect:
         serializedVersion: 2
-        x: 0
+        x: 35
+        y: 431
+        width: 249
+        height: 130
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 639eafae5bd8ab080800000000000000
+      internalID: -9170861878715684554
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: baterfly_anim_rev_1
+      rect:
+        serializedVersion: 2
+        x: 106
         y: 0
-        width: 2048
+        width: 843
         height: 1024
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -128,8 +159,52 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 3898c4ae723c70a70800000000000000
-      internalID: 8793211373666208131
+      spriteID: 9d6ae5f39d19d48b0800000000000000
+      internalID: -5166312835266992423
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: baterfly_anim_rev_2
+      rect:
+        serializedVersion: 2
+        x: 754
+        y: 423
+        width: 138
+        height: 173
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 11f265fbb996daec0800000000000000
+      internalID: -3554068413274509551
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: baterfly_anim_rev_3
+      rect:
+        serializedVersion: 2
+        x: 1026
+        y: 139
+        width: 222
+        height: 728
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 397d94c0de23e2d20800000000000000
+      internalID: 3255595574330251155
       vertices: []
       indices: 
       edges: []
@@ -148,7 +223,10 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      "\u0434\u0438\u0430\u043B\u043E\u0433\u043E\u0432\u043E\u0435 \u043E\u043A\u043D\u043E_0": 8793211373666208131
+      baterfly_anim_rev_0: -9170861878715684554
+      baterfly_anim_rev_1: -5166312835266992423
+      baterfly_anim_rev_2: -3554068413274509551
+      baterfly_anim_rev_3: 3255595574330251155
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
