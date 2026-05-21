@@ -49,7 +49,7 @@ namespace TheAlchemest.UI
 
         public static bool HasResumableSession => instance != null && instance.hasResumableScene;
 
-        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
+        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
         static void Bootstrap()
         {
             EnsureInstance();
@@ -89,17 +89,24 @@ namespace TheAlchemest.UI
 
         void Awake()
         {
+            // Standard singleton behaviour: keep the first created instance and destroy duplicates.
             if (instance != null && instance != this)
             {
-                Destroy(gameObject);
+                Debug.Log($"PersistentGameUi: duplicate Awake on '{gameObject.name}' (id={gameObject.GetInstanceID()}) - destroying this, keeping existing instance id={instance.gameObject.GetInstanceID()}");
+                // Keep scene canvas objects intact; remove only duplicate manager component.
+                Destroy(this);
                 return;
             }
 
             instance = this;
+            Debug.Log($"PersistentGameUi: Awake on '{gameObject.name}' (id={gameObject.GetInstanceID()}) - set as singleton instance");
             DontDestroyOnLoad(gameObject);
+
+            // Ensure there is a single EventSystem early.
             EnsureEventSystem();
 
             Scene activeScene = SceneManager.GetActiveScene();
+            // Try to attach to a scene-provided UI first, otherwise build/reuse runtime canvas.
             if (!TryInitializeSceneUi(activeScene))
             {
                 BuildRuntimeUi();
@@ -114,6 +121,34 @@ namespace TheAlchemest.UI
         void Start()
         {
             RefreshForScene(SceneManager.GetActiveScene());
+            LogUiDiagnostics();
+        }
+
+        void LogUiDiagnostics()
+        {
+            var allInstances = FindObjectsOfType<PersistentGameUi>(true);
+            Debug.Log($"PersistentGameUi instances found: {allInstances.Length}");
+            for (int i = 0; i < allInstances.Length; i++)
+            {
+                var it = allInstances[i];
+                Debug.Log($"  Instance[{i}] name='{it.gameObject.name}' id={it.gameObject.GetInstanceID()} scene={(it.gameObject.scene.IsValid()?it.gameObject.scene.name:"<no-scene>")}");
+            }
+
+            var pauseButtons = FindObjectsOfType<Button>(true);
+            int found = 0;
+            for (int i = 0; i < pauseButtons.Length; i++)
+            {
+                if (pauseButtons[i] != null && pauseButtons[i].name == pauseButtonObjectName)
+                {
+                    var b = pauseButtons[i];
+                    Debug.Log($"Found PauseButton[{found}] objName='{b.name}' id={b.gameObject.GetInstanceID()} root={b.transform.root.name} scene={(b.gameObject.scene.IsValid()?b.gameObject.scene.name:"<no-scene>")} interactable={b.interactable} raycast={(b.GetComponent<Image>()?b.GetComponent<Image>().raycastTarget:false)}");
+                    found++;
+                }
+            }
+            Debug.Log($"Total Buttons named '{pauseButtonObjectName}': {found}");
+
+            var eventSystems = FindObjectsOfType<EventSystem>(true);
+            Debug.Log($"EventSystem count: {eventSystems.Length}");
         }
 
         void OnDisable()
@@ -129,7 +164,17 @@ namespace TheAlchemest.UI
                 return;
             }
 
-            if (Keyboard.current != null && Keyboard.current.escapeKey.wasPressedThisFrame)
+            bool escPressed = false;
+            if (Keyboard.current != null)
+            {
+                escPressed = Keyboard.current.escapeKey.wasPressedThisFrame;
+            }
+            else
+            {
+                escPressed = Input.GetKeyDown(KeyCode.Escape);
+            }
+
+            if (escPressed)
             {
                 if (isPaused)
                 {
@@ -155,6 +200,13 @@ namespace TheAlchemest.UI
             if (gameplayScene && !TryInitializeSceneUi(scene))
             {
                 BuildRuntimeUi();
+            }
+
+            // Rebind UI elements on every scene refresh to handle scene unload/load cycles
+            // (some child GameObjects can be recreated by scene load and references become invalid).
+            if (gameplayScene)
+            {
+                RebindUiElements();
             }
 
             if (sceneCanvas != null)
@@ -191,6 +243,83 @@ namespace TheAlchemest.UI
             }
         }
 
+        void RebindUiElements()
+        {
+            // Prefer sceneCanvas when available (scene-provided UI), otherwise runtimeCanvas
+            Canvas target = sceneCanvas != null ? sceneCanvas : runtimeCanvas;
+            if (target == null)
+            {
+                // Nothing to bind against
+                return;
+            }
+
+            // Find fresh references under the target canvas
+            pauseButton = FindObjectByName<Button>(target.transform, pauseButtonObjectName) ?? pauseButton;
+            pausePanel = FindObjectByName<RectTransform>(target.transform, pausePanelObjectName)?.gameObject ?? pausePanel;
+            settingsPanel = FindObjectByName<RectTransform>(target.transform, pauseSettingsPanelObjectName)?.gameObject ?? settingsPanel;
+
+            if (pauseButton != null)
+            {
+                BindButton(pauseButton, PauseGame);
+                pauseButton.gameObject.SetActive(true);
+            }
+
+            if (pausePanel != null)
+            {
+                pausePanel.SetActive(false);
+            }
+
+            if (settingsPanel != null)
+            {
+                settingsPanel.SetActive(false);
+                // Rebind settings children
+                masterVolumeSlider = FindObjectByName<Slider>(settingsPanel.transform, masterVolumeSliderObjectName) ?? masterVolumeSlider;
+                musicVolumeSlider = FindObjectByName<Slider>(settingsPanel.transform, musicVolumeSliderObjectName) ?? musicVolumeSlider;
+                sfxVolumeSlider = FindObjectByName<Slider>(settingsPanel.transform, sfxVolumeSliderObjectName) ?? sfxVolumeSlider;
+
+                closeSettingsButton = FindObjectByName<Button>(settingsPanel.transform, closeSettingsButtonObjectName) ?? closeSettingsButton;
+                if (closeSettingsButton == null)
+                {
+                    var btns = settingsPanel.GetComponentsInChildren<Button>(true);
+                    foreach (var b in btns)
+                    {
+                        var txt = b.GetComponentInChildren<UnityEngine.UI.Text>(true);
+                        if (txt != null && !string.IsNullOrWhiteSpace(txt.text) && string.Equals(txt.text.Trim(), "BACK", System.StringComparison.OrdinalIgnoreCase))
+                        {
+                            closeSettingsButton = b;
+                            break;
+                        }
+                    }
+                }
+
+                BindButton(closeSettingsButton, CloseSettings);
+            }
+
+            // Rebind pause panel buttons
+            if (pausePanel != null)
+            {
+                resumeButton = FindObjectByName<Button>(pausePanel.transform, resumeButtonObjectName) ?? resumeButton;
+                openSettingsButton = FindObjectByName<Button>(pausePanel.transform, openSettingsButtonObjectName) ?? openSettingsButton;
+                exitToMainMenuButton = FindObjectByName<Button>(pausePanel.transform, exitToMainMenuButtonObjectName) ?? exitToMainMenuButton;
+
+                BindButton(resumeButton, ResumeGame);
+                BindButton(openSettingsButton, OpenSettings);
+                BindButton(exitToMainMenuButton, ExitToMainMenu);
+            }
+
+            // Ensure AudioSettings component has latest slider refs
+            AudioSettings audioSettingsComp = gameObject.GetComponent<AudioSettings>();
+            if (audioSettingsComp == null)
+            {
+                audioSettingsComp = gameObject.AddComponent<AudioSettings>();
+            }
+
+            if (masterVolumeSlider != null && musicVolumeSlider != null && sfxVolumeSlider != null)
+            {
+                audioSettingsComp.Initialize(masterVolumeSlider, musicVolumeSlider, sfxVolumeSlider);
+            }
+        }
+
         bool IsGameplayScene(Scene scene)
         {
             return scene.IsValid()
@@ -200,6 +329,15 @@ namespace TheAlchemest.UI
 
         void PauseGame()
         {
+            Debug.Log($"PauseGame called on instance '{gameObject.name}' (id={gameObject.GetInstanceID()})");
+            if (pausePanel == null)
+            {
+                Debug.LogWarning("PauseGame: pausePanel reference is null");
+            }
+            else
+            {
+                Debug.Log($"PauseGame: pausePanel activeBefore={pausePanel.activeSelf}");
+            }
             isPaused = true;
             Time.timeScale = 0f;
 
@@ -211,6 +349,7 @@ namespace TheAlchemest.UI
             if (pausePanel != null)
             {
                 pausePanel.SetActive(true);
+                Debug.Log($"PauseGame: pausePanel activeAfter={pausePanel.activeSelf}");
             }
 
             if (settingsPanel != null)
@@ -286,29 +425,130 @@ namespace TheAlchemest.UI
 
         static void EnsureEventSystem()
         {
-            EventSystem eventSystem = FindAnyObjectByType<EventSystem>();
-            if (eventSystem != null)
+            // Find all EventSystems in the scene (including inactive)
+            EventSystem[] systems = FindObjectsOfType<EventSystem>(true);
+
+            if (systems != null && systems.Length > 0)
             {
-                if (eventSystem.GetComponent<InputSystemUIInputModule>() == null)
+                // Keep the first valid EventSystem, remove extras
+                EventSystem keeper = systems[0];
+                if (keeper.GetComponent<InputSystemUIInputModule>() == null)
                 {
-                    eventSystem.gameObject.AddComponent<InputSystemUIInputModule>();
+                    keeper.gameObject.AddComponent<InputSystemUIInputModule>();
+                }
+                keeper.enabled = true;
+
+                if (systems.Length > 1)
+                {
+                    Debug.LogWarning($"Multiple EventSystem instances found ({systems.Length}). Keeping '{keeper.gameObject.name}' and destroying others.");
+                    for (int i = 1; i < systems.Length; i++)
+                    {
+                        var s = systems[i];
+                        if (s != null && s.gameObject != null)
+                        {
+                            Destroy(s.gameObject);
+                        }
+                    }
                 }
 
-                if (!eventSystem.enabled)
-                {
-                    eventSystem.enabled = true;
-                }
-
+                DontDestroyOnLoad(keeper.gameObject);
                 return;
             }
 
+            // No EventSystem found — create one
             GameObject eventSystemObject = new GameObject("EventSystem");
             eventSystemObject.AddComponent<EventSystem>();
             eventSystemObject.AddComponent<InputSystemUIInputModule>();
+            DontDestroyOnLoad(eventSystemObject);
         }
 
         void BuildRuntimeUi()
         {
+            // If a PersistentGameCanvas object already exists in the scene (for example from a previous
+            // DontDestroyOnLoad instance), reuse it instead of creating a duplicate.
+            GameObject existing = GameObject.Find("PersistentGameCanvas");
+            if (existing != null)
+            {
+                Canvas existingCanvas = existing.GetComponent<Canvas>();
+                if (existingCanvas != null)
+                {
+                    runtimeCanvas = existingCanvas;
+                    sceneCanvas = runtimeCanvas;
+                    DontDestroyOnLoad(existing);
+                    Debug.Log("BuildRuntimeUi: reusing existing PersistentGameCanvas");
+
+                    // Try to find pause UI elements inside the existing canvas and bind them
+                    pauseButton = FindObjectByName<Button>(runtimeCanvas.transform, pauseButtonObjectName);
+                    pausePanel = FindObjectByName<RectTransform>(runtimeCanvas.transform, pausePanelObjectName)?.gameObject;
+                    settingsPanel = FindObjectByName<RectTransform>(runtimeCanvas.transform, pauseSettingsPanelObjectName)?.gameObject;
+
+                    if (pauseButton != null)
+                    {
+                        BindButton(pauseButton, PauseGame);
+                    }
+
+                    if (pausePanel != null)
+                    {
+                        pausePanel.SetActive(false);
+                    }
+
+                    if (settingsPanel != null)
+                    {
+                        settingsPanel.SetActive(false);
+                    }
+
+                    // Try to find other buttons inside the pause panel
+                    if (pausePanel != null)
+                    {
+                        resumeButton = FindObjectByName<Button>(pausePanel.transform, resumeButtonObjectName);
+                        openSettingsButton = FindObjectByName<Button>(pausePanel.transform, openSettingsButtonObjectName);
+                        exitToMainMenuButton = FindObjectByName<Button>(pausePanel.transform, exitToMainMenuButtonObjectName);
+
+                        BindButton(resumeButton, ResumeGame);
+                        BindButton(openSettingsButton, OpenSettings);
+                        BindButton(exitToMainMenuButton, ExitToMainMenu);
+                    }
+
+                    // Find sliders in settings panel and initialize AudioSettings if present
+                    if (settingsPanel != null)
+                    {
+                        masterVolumeSlider = FindObjectByName<Slider>(settingsPanel.transform, masterVolumeSliderObjectName);
+                        musicVolumeSlider = FindObjectByName<Slider>(settingsPanel.transform, musicVolumeSliderObjectName);
+                        sfxVolumeSlider = FindObjectByName<Slider>(settingsPanel.transform, sfxVolumeSliderObjectName);
+                        // Try find close settings button inside settings panel and bind it
+                        closeSettingsButton = FindObjectByName<Button>(settingsPanel.transform, closeSettingsButtonObjectName);
+                        if (closeSettingsButton == null)
+                        {
+                            var btns = settingsPanel.GetComponentsInChildren<Button>(true);
+                            foreach (var b in btns)
+                            {
+                                var txt = b.GetComponentInChildren<UnityEngine.UI.Text>(true);
+                                if (txt != null && !string.IsNullOrWhiteSpace(txt.text) && string.Equals(txt.text.Trim(), "BACK", System.StringComparison.OrdinalIgnoreCase))
+                                {
+                                    closeSettingsButton = b;
+                                    Debug.Log($"BuildRuntimeUi: found closeSettingsButton by label on '{b.gameObject.name}'");
+                                    break;
+                                }
+                            }
+                        }
+                        BindButton(closeSettingsButton, CloseSettings);
+                    }
+
+                    AudioSettings audioSettingsComp = gameObject.GetComponent<AudioSettings>();
+                    if (audioSettingsComp == null)
+                    {
+                        audioSettingsComp = gameObject.AddComponent<AudioSettings>();
+                    }
+
+                    if (masterVolumeSlider != null && musicVolumeSlider != null && sfxVolumeSlider != null)
+                    {
+                        audioSettingsComp.Initialize(masterVolumeSlider, musicVolumeSlider, sfxVolumeSlider);
+                    }
+
+                    return;
+                }
+            }
+
             if (runtimeCanvas != null)
             {
                 sceneCanvas = runtimeCanvas;
@@ -383,9 +623,28 @@ namespace TheAlchemest.UI
             Button scenePauseButton = FindObjectByName<Button>(targetCanvas.transform, pauseButtonObjectName);
             GameObject scenePausePanel = FindObjectByName<RectTransform>(targetCanvas.transform, pausePanelObjectName)?.gameObject;
             GameObject sceneSettingsPanel = FindObjectByName<RectTransform>(targetCanvas.transform, pauseSettingsPanelObjectName)?.gameObject;
+            // If exact-named pause button not found, try to locate a Button under this canvas with label text "PAUSE"
+            if (scenePauseButton == null)
+            {
+                var buttons = targetCanvas.GetComponentsInChildren<Button>(true);
+                foreach (var b in buttons)
+                {
+                    if (b == null) continue;
+                    var txt = b.GetComponentInChildren<UnityEngine.UI.Text>(true);
+                    if (txt != null && !string.IsNullOrWhiteSpace(txt.text) && string.Equals(txt.text.Trim(), "PAUSE", System.StringComparison.OrdinalIgnoreCase))
+                    {
+                        scenePauseButton = b;
+                        Debug.Log($"TryInitializeSceneUi: found pause button by label on '{b.gameObject.name}' (id={b.gameObject.GetInstanceID()})");
+                        break;
+                    }
+                }
+            }
 
             if (scenePauseButton == null || scenePausePanel == null || sceneSettingsPanel == null)
             {
+                if (scenePauseButton == null) Debug.LogWarning($"PauseButton not found with name '{pauseButtonObjectName}'");
+                if (scenePausePanel == null) Debug.LogWarning($"PausePanel not found with name '{pausePanelObjectName}'");
+                if (sceneSettingsPanel == null) Debug.LogWarning($"SettingsPanel not found with name '{pauseSettingsPanelObjectName}'");
                 return false;
             }
 
@@ -429,6 +688,12 @@ namespace TheAlchemest.UI
             {
                 audioSettings.Initialize(masterVolumeSlider, musicVolumeSlider, sfxVolumeSlider);
             }
+            else
+            {
+                if (masterVolumeSlider == null) Debug.LogWarning($"MasterVolumeSlider not found with name '{masterVolumeSliderObjectName}'");
+                if (musicVolumeSlider == null) Debug.LogWarning($"MusicVolumeSlider not found with name '{musicVolumeSliderObjectName}'");
+                if (sfxVolumeSlider == null) Debug.LogWarning($"SfxVolumeSlider not found with name '{sfxVolumeSliderObjectName}'");
+            }
 
             return true;
         }
@@ -471,9 +736,13 @@ namespace TheAlchemest.UI
         {
             if (button == null)
             {
+                Debug.LogWarning($"BindButton: button is null");
                 return;
             }
 
+            string rootName = button.transform.root != null ? button.transform.root.name : "<no-root>";
+            string sceneName = button.gameObject.scene.IsValid() ? button.gameObject.scene.name : "<no-scene>";
+            Debug.Log($"BindButton: binding '{button.name}' (root={rootName}, scene={sceneName}, id={button.gameObject.GetInstanceID()})");
             button.onClick.RemoveListener(callback);
             button.onClick.AddListener(callback);
         }

@@ -12,8 +12,8 @@ public class PlayerAnimationController : MonoBehaviour
     
     [Header("Sprite Alignment")]
     [SerializeField] bool alignFrames = true;
-    [SerializeField] float alignSpeed = 10f; // units per second
-    [SerializeField] float alignYOffset = 0f; // additive offset if needed
+    [SerializeField] float alignSpeed = 10f; 
+    [SerializeField] float alignYOffset = 0f; 
     [SerializeField] bool autoComputeAlignment = true;
     
     Animator animator;
@@ -47,12 +47,12 @@ public class PlayerAnimationController : MonoBehaviour
         isGroundedHash = Animator.StringToHash(isGroundedParameter);
         speedHash = Animator.StringToHash(speedParameter);
 
-        // find sprite renderer on animator child
+        
         spriteRenderer = animator.GetComponent<SpriteRenderer>();
         if (spriteRenderer == null)
             spriteRenderer = animator.GetComponentInChildren<SpriteRenderer>(true);
 
-        // auto-compute alignment offset based on Collider2D bottom and sprite bottom
+        
         if (alignFrames && autoComputeAlignment && spriteRenderer != null)
         {
             Collider2D col = GetComponent<Collider2D>();
@@ -66,17 +66,17 @@ public class PlayerAnimationController : MonoBehaviour
                 float spriteBottomWorld = spriteBottomWorldPt.y;
 
                 float deltaWorld = colliderBottomWorld - spriteBottomWorld;
-                // convert world delta to local delta relative to sprite's parent
+                
                 Transform parentOfSprite = spriteRenderer.transform.parent != null ? spriteRenderer.transform.parent : transform;
                 Vector3 worldDelta = new Vector3(0f, deltaWorld, 0f);
                 Vector3 localDelta = parentOfSprite.InverseTransformVector(worldDelta);
 
                 float targetLocalY = spriteRenderer.transform.localPosition.y + localDelta.y;
-                // alignYOffset used in LateUpdate: targetLocalY = -spriteBottom + alignYOffset
+                
                 float spriteBottomLocal = spriteRenderer.sprite.bounds.min.y;
                 alignYOffset = targetLocalY + spriteBottomLocal;
 
-                // choose a reasonable alignSpeed to avoid instant snapping; larger sprites may need larger speed
+                
                 alignSpeed = Mathf.Max(8f, Mathf.Abs(deltaWorld) * 30f);
                 Debug.Log($"[PlayerAnimationController] Auto computed alignYOffset={alignYOffset:F3}, alignSpeed={alignSpeed:F1}");
             }
@@ -115,13 +115,13 @@ public class PlayerAnimationController : MonoBehaviour
 
     bool ComputeIsGrounded()
     {
-        // If moving upward or just started jumping, consider airborne
+        
         if (rb.linearVelocity.y > 0.01f)
         {
             return false;
         }
 
-        // Check if touching ground using PlayerMovement's ground check
+        
         if (movement != null && movement.groundCheck != null)
         {
             return Physics2D.OverlapCircle(movement.groundCheck.position, movement.groundCheckRadius, movement.groundLayer);
@@ -179,7 +179,7 @@ public class PlayerAnimationController : MonoBehaviour
             Debug.LogWarning($"PlayerAnimationController: Bool parameter '{isGroundedParameter}' not found in Animator on {name}.", this);
         }
         
-        // initialize alignment
+        
         if (alignFrames && spriteRenderer != null && spriteRenderer.sprite != null)
         {
             currentAlignY = spriteRenderer.transform.localPosition.y;
@@ -193,7 +193,7 @@ public class PlayerAnimationController : MonoBehaviour
         float spriteBottom = spriteRenderer.sprite.bounds.min.y;
         float targetLocalY = -spriteBottom + alignYOffset;
 
-        // smooth approach
+        
         float maxDelta = alignSpeed * Time.deltaTime;
         float newY = Mathf.MoveTowards(spriteRenderer.transform.localPosition.y, targetLocalY, maxDelta);
         Vector3 lp = spriteRenderer.transform.localPosition;

@@ -120,7 +120,7 @@ namespace TheAlchemest.Audio
 
         IEnumerator HandleSceneMusic(Scene scene)
         {
-            // Try to find a GameObject named "SceneMusic" with an AudioSource in the scene.
+            
             AudioClip clip = null;
 
             GameObject[] roots = scene.GetRootGameObjects();
@@ -133,14 +133,14 @@ namespace TheAlchemest.Audio
                     if (src != null && src.clip != null)
                     {
                         clip = src.clip;
-                        // disable to avoid duplicate playback
+                        
                         src.enabled = false;
                         break;
                     }
                 }
             }
 
-            // Fallback: try Resources/Music/{scene.name}
+            
             if (clip == null)
             {
                 var res = Resources.Load<AudioClip>($"Music/{scene.name}");
@@ -150,7 +150,7 @@ namespace TheAlchemest.Audio
                 }
             }
 
-            // If we still have no clip, do nothing.
+            
             if (clip == null)
             {
                 yield break;
@@ -161,7 +161,7 @@ namespace TheAlchemest.Audio
                 yield break;
             }
 
-            // Crossfade
+            
             yield return StartCoroutine(CrossfadeTo(clip, 0.5f));
         }
 
@@ -194,7 +194,7 @@ namespace TheAlchemest.Audio
             musicSource.volume = target;
         }
 
-        // Play sfx honoring master and sfx volume
+        
         public void PlaySfx(AudioClip clip, float spatialBlend = 0f)
         {
             if (clip == null) return;

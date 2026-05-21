@@ -48,7 +48,7 @@ public class PlayerMovement : MonoBehaviour
     float horizontalInput;
     bool facingRight = true;
 
-    // state
+    
     int jumpsLeft;
     float coyoteTimeCounter;
     float jumpBufferCounter;
@@ -87,7 +87,17 @@ public class PlayerMovement : MonoBehaviour
 
         horizontalInput = Mathf.Clamp(kbDir, -1f, 1f);
 
-        if (Keyboard.current != null && Keyboard.current.spaceKey.wasPressedThisFrame) jumpBufferCounter = jumpBufferTime;
+        bool jumpPressed = false;
+        if (Keyboard.current != null)
+        {
+            jumpPressed = Keyboard.current.spaceKey.wasPressedThisFrame || (Keyboard.current.wKey != null && Keyboard.current.wKey.wasPressedThisFrame);
+        }
+        else
+        {
+            jumpPressed = Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.W);
+        }
+
+        if (jumpPressed) jumpBufferCounter = jumpBufferTime;
         else jumpBufferCounter -= Time.deltaTime;
 
         bool isGrounded = groundCheck != null && Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer);

@@ -98,7 +98,7 @@ public class PuzzleField : MonoBehaviour
         }
 
         Vector3 origin = GetOriginWorld();
-        // Grid cell indices are defined by cell area [n, n+1), while centers are at n+0.5.
+        
         int x = Mathf.FloorToInt((worldPos.x - origin.x) / cellSize);
         int y = Mathf.FloorToInt((worldPos.y - origin.y) / cellSize);
         return new Vector2Int(x, y);

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class DoorWithoutE : MonoBehaviour  // ← Имя класса изменено
+public class DoorWithoutE : MonoBehaviour  
 {
     [Tooltip("Имя сцены для загрузки при подходе игрока к двери.")]
     public string имяЦелевойСцены = "AlchemistHome";

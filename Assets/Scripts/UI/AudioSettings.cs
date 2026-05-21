@@ -78,6 +78,7 @@ namespace TheAlchemest.UI
         {
             masterVolume = value;
             PlayerPrefs.SetFloat(MasterVolumeKey, masterVolume);
+            ApplyVolume();
             BroadcastValuesChanged();
             Debug.Log($"Master Volume: {masterVolume}");
         }
@@ -86,6 +87,7 @@ namespace TheAlchemest.UI
         {
             musicVolume = value;
             PlayerPrefs.SetFloat(MusicVolumeKey, musicVolume);
+            ApplyVolume();
             BroadcastValuesChanged();
             Debug.Log($"Music Volume: {musicVolume}");
         }
@@ -94,8 +96,14 @@ namespace TheAlchemest.UI
         {
             sfxVolume = value;
             PlayerPrefs.SetFloat(SfxVolumeKey, sfxVolume);
+            ApplyVolume();
             BroadcastValuesChanged();
             Debug.Log($"SFX Volume: {sfxVolume}");
+        }
+
+        void ApplyVolume()
+        {
+            AudioListener.volume = masterVolume;
         }
 
         static void BroadcastValuesChanged()

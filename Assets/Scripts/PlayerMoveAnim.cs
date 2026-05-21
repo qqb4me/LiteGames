@@ -14,7 +14,7 @@ public class PlayerMoveAnim : MonoBehaviour
 
     void Update()
     {
-        // Deprecated: movement and animation are now driven by PlayerMovement and PlayerAnimationController.
-        // This script is kept only to avoid breaking existing scene references.
+        
+        
     }
 }

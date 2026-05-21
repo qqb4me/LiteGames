@@ -27,7 +27,7 @@ public class HideUntilEnoughIngredients : MonoBehaviour
 
     void Start()
     {
-        // Находим менеджер инвентаря
+        
         инвентарь = FindAnyObjectByType<GameInventoryManager>();
 
         if (инвентарь == null)
@@ -36,16 +36,16 @@ public class HideUntilEnoughIngredients : MonoBehaviour
             return;
         }
 
-        // Если объект для скрытия не указан, скрываем этот объект
+        
         if (объектДляСкрытия == null)
         {
             объектДляСкрытия = gameObject;
         }
 
-        // Подписываемся на изменения (безопасно)
+        
         инвентарь.OnCollectedChanged += OnInventoryChanged;
 
-        // Проверяем при старте
+        
         ПроверитьИнгредиенты();
     }
 
@@ -68,7 +68,7 @@ public class HideUntilEnoughIngredients : MonoBehaviour
         ПроверитьИнгредиенты();
     }
 
-    // Этот метод можно вызывать из других скриптов (например, при сборе ингредиента)
+    
     public void ПроверитьИнгредиенты()
     {
         if (инвентарь == null) return;
@@ -100,7 +100,7 @@ public class HideUntilEnoughIngredients : MonoBehaviour
                 {
                     r.enabled = false;
                 }
-                // также отключаем UI Graphic, если есть
+                
                 var uis = объектДляСкрытия.GetComponentsInChildren<UnityEngine.UI.Graphic>(true);
                 foreach (var g in uis)
                 {
@@ -122,7 +122,7 @@ public class HideUntilEnoughIngredients : MonoBehaviour
 
     private int ПолучитьКоличествоИнгредиентов()
     {
-        // Сначала пробуем публичное свойство
+        
         try
         {
             if (инвентарь != null)
@@ -132,7 +132,7 @@ public class HideUntilEnoughIngredients : MonoBehaviour
         }
         catch { }
 
-        // Фоллбек — старая рефлексия (если свойства нет)
+        
         var поле = typeof(GameInventoryManager).GetField("_collectedCount",
             System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
 

@@ -7,7 +7,7 @@ public class Ingredient : MonoBehaviour
 
     private void Update()
     {
-        // Если игрок в зоне триггера и нажал нужную кнопку
+        
         if (isPlayerInside && Keyboard.current != null && Keyboard.current.eKey.wasPressedThisFrame)
         {
             Collect();
@@ -29,7 +29,7 @@ public class Ingredient : MonoBehaviour
         if (collision.CompareTag("Player"))
         {
             isPlayerInside = true;
-            // Тут можно добавить появление подсказки "Нажми E", если захочешь
+            
         }
     }
 

@@ -17,7 +17,7 @@ public class QuickDialog3 : MonoBehaviour
     [System.Serializable]
     public class DialogMessage
     {
-        [Range(1, 3)]  // Ползунок от 1 до 3
+        [Range(1, 3)]  
         public int dialogNumber = 1;
 
         [TextArea(2, 4)]
@@ -65,10 +65,10 @@ public class QuickDialog3 : MonoBehaviour
     {
         DialogMessage msg = messages[currentMessageIndex];
 
-        // Скрываем все окна
+        
         HideAllDialogs();
 
-        // Показываем выбранное окно (1, 2 или 3)
+        
         int index = msg.dialogNumber - 1;
         if (index >= 0 && index < dialogCanvases.Length)
         {

@@ -31,7 +31,7 @@ public class EnemyPatrol : MonoBehaviour
     {
         if (leftPoint != null && rightPoint != null)
         {
-            // First move to the left point without visual mirroring.
+            
             movingToRight = false;
         }
     }
@@ -138,7 +138,7 @@ public class EnemyPatrol : MonoBehaviour
 
         if (useSpriteRendererFlipX)
         {
-            // This sprite faces left by default, so it must be mirrored when moving right.
+            
             cachedSpriteRenderer.flipX = faceRight;
             return;
         }
