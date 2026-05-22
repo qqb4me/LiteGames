@@ -673,6 +673,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 36578160445671414, guid: 8ce8f6bd3000a76498137440e0d295ce, type: 3}
+      propertyPath: m_Size.y
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 2661570323752646162, guid: 8ce8f6bd3000a76498137440e0d295ce, type: 3}
       propertyPath: m_Enabled
       value: 0
@@ -733,6 +737,14 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 5626713945654650895, guid: 8ce8f6bd3000a76498137440e0d295ce, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5626713945654650895, guid: 8ce8f6bd3000a76498137440e0d295ce, type: 3}
+      propertyPath: groundLayer.m_Bits
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 7585068700019457733, guid: 8ce8f6bd3000a76498137440e0d295ce, type: 3}
       propertyPath: m_Name
       value: player
@@ -744,7 +756,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 7585068700019457733, guid: 8ce8f6bd3000a76498137440e0d295ce, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1734611425}
   m_SourcePrefab: {fileID: 100100000, guid: 8ce8f6bd3000a76498137440e0d295ce, type: 3}
 --- !u!1001 &878481667
 PrefabInstance:
@@ -1115,6 +1130,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
+--- !u!212 &1187445942 stripped
+SpriteRenderer:
+  m_CorrespondingSourceObject: {fileID: 8041359784381528471, guid: 8ce8f6bd3000a76498137440e0d295ce, type: 3}
+  m_PrefabInstance: {fileID: 720655346}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1416674676
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1253,6 +1273,41 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3ddeb6eb3a55f6145841b19be82b0ee3, type: 3}
+--- !u!1 &1734611418 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7585068700019457733, guid: 8ce8f6bd3000a76498137440e0d295ce, type: 3}
+  m_PrefabInstance: {fileID: 720655346}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1734611425
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1734611418}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fd8cd0d9315fa444f934c2c66f5b6c5e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerMove
+  speed: 10
+  accel: 50
+  decel: 50
+  jumps: 1
+  jForce: 8
+  gLayer:
+    serializedVersion: 2
+    m_Bits: 264
+  gCheck: {fileID: 1855933954}
+  gRad: 1
+  fallM: 3
+  lowJM: 10
+  sr: {fileID: 1187445942}
+--- !u!4 &1855933954 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8906140977440742500, guid: 8ce8f6bd3000a76498137440e0d295ce, type: 3}
+  m_PrefabInstance: {fileID: 720655346}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &2133569400
 GameObject:
   m_ObjectHideFlags: 0

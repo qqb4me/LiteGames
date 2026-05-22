@@ -159,6 +159,7 @@ GameObject:
   - component: {fileID: 5626713945654650895}
   - component: {fileID: 1586544920644645037}
   - component: {fileID: 4812641893945858764}
+  - component: {fileID: -1777421471896380590}
   m_Layer: 0
   m_Name: player
   m_TagString: Player
@@ -263,7 +264,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7585068700019457733}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e8453ca28a6f52e4f81adddb03d4cd94, type: 3}
   m_Name: 
@@ -328,3 +329,28 @@ MonoBehaviour:
   alignSpeed: 19.87
   alignYOffset: -20.22
   autoComputeAlignment: 1
+--- !u!114 &-1777421471896380590
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7585068700019457733}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fd8cd0d9315fa444f934c2c66f5b6c5e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerMove
+  speed: 20
+  accel: 50
+  decel: 50
+  jumps: 1
+  jForce: 8
+  gLayer:
+    serializedVersion: 2
+    m_Bits: 264
+  gCheck: {fileID: 0}
+  gRad: 1
+  fallM: 3
+  lowJM: 10
+  sr: {fileID: 0}
