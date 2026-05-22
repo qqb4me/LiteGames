@@ -10,24 +10,14 @@ public class HideUntilEnoughIngredients : MonoBehaviour
     }
 
     [Header("Настройки")]
-    [Tooltip("Сколько ингредиентов нужно собрать")]
-    public int нужноИнгредиентов = 5;
-
-    [Tooltip("Объект, который нужно скрывать (если не указан - скрывается этот объект)")]
     public GameObject объектДляСкрытия;
-
-    [Tooltip("Проверять каждый кадр (если false - проверка только при старте и при сборе)")]
-    public bool проверятьКаждыйКадр = false;
-
-    [Tooltip("Как скрывать объект: полностью отключить GameObject или только визуальные компоненты")]
-    public HideMode режимСокрытия = HideMode.DisableRenderers;
+    public HideMode режимСокрытия = HideMode.SetActiveFalse;
 
     private GameInventoryManager инвентарь;
-    private bool ужеСкрыт = false;
+    private bool объектСкрыт = false;
 
     void Start()
     {
-        
         инвентарь = FindAnyObjectByType<GameInventoryManager>();
 
         if (инвентарь == null)
@@ -36,57 +26,26 @@ public class HideUntilEnoughIngredients : MonoBehaviour
             return;
         }
 
-        
         if (объектДляСкрытия == null)
-        {
             объектДляСкрытия = gameObject;
+
+        if (инвентарь.AreAllIngredientsCollected())
+        {
+            СкрытьОбъект();
         }
-
-        
-        инвентарь.OnCollectedChanged += OnInventoryChanged;
-
-        
-        ПроверитьИнгредиенты();
-    }
-
-    void OnDestroy()
-    {
-        if (инвентарь != null)
-            инвентарь.OnCollectedChanged -= OnInventoryChanged;
     }
 
     void Update()
     {
-        if (проверятьКаждыйКадр)
+        if (инвентарь != null && инвентарь.AreAllIngredientsCollected() && !объектСкрыт)
         {
-            ПроверитьИнгредиенты();
+            СкрытьОбъект();
         }
     }
 
-    void OnInventoryChanged(int count)
+    private void СкрытьОбъект()
     {
-        ПроверитьИнгредиенты();
-    }
-
-    
-    public void ПроверитьИнгредиенты()
-    {
-        if (инвентарь == null) return;
-        if (ужеСкрыт) return;
-
-        int собрано = ПолучитьКоличествоИнгредиентов();
-
-        if (собрано >= нужноИнгредиентов)
-        {
-            HideTarget();
-            ужеСкрыт = true;
-            Debug.Log($"Собрано {собрано}/{нужноИнгредиентов}. Объект {объектДляСкрытия.name} скрыт!");
-        }
-    }
-
-    private void HideTarget()
-    {
-        if (объектДляСкрытия == null) return;
+        if (объектДляСкрытия == null || объектСкрыт) return;
 
         switch (режимСокрытия)
         {
@@ -97,15 +56,11 @@ public class HideUntilEnoughIngredients : MonoBehaviour
             case HideMode.DisableRenderers:
                 var renderers = объектДляСкрытия.GetComponentsInChildren<Renderer>(true);
                 foreach (var r in renderers)
-                {
                     r.enabled = false;
-                }
-                
-                var uis = объектДляСкрытия.GetComponentsInChildren<UnityEngine.UI.Graphic>(true);
-                foreach (var g in uis)
-                {
+
+                var uiGraphics = объектДляСкрытия.GetComponentsInChildren<UnityEngine.UI.Graphic>(true);
+                foreach (var g in uiGraphics)
                     g.enabled = false;
-                }
                 break;
 
             case HideMode.DisableCanvasGroups:
@@ -118,29 +73,8 @@ public class HideUntilEnoughIngredients : MonoBehaviour
                 }
                 break;
         }
-    }
 
-    private int ПолучитьКоличествоИнгредиентов()
-    {
-        
-        try
-        {
-            if (инвентарь != null)
-            {
-                return инвентарь.CollectedCount;
-            }
-        }
-        catch { }
-
-        
-        var поле = typeof(GameInventoryManager).GetField("_collectedCount",
-            System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
-
-        if (поле != null && инвентарь != null)
-        {
-            return (int)поле.GetValue(инвентарь);
-        }
-
-        return 0;
+        объектСкрыт = true;
+        Debug.Log($"Все предметы собраны. Объект {объектДляСкрытия.name} скрыт!");
     }
 }
