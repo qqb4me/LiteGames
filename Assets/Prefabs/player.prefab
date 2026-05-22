@@ -342,10 +342,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerMove
   speed: 20
-  accel: 50
+  accel: 80
   decel: 50
   jumps: 1
-  jForce: 8
+  jForce: 14
   gLayer:
     serializedVersion: 2
     m_Bits: 264

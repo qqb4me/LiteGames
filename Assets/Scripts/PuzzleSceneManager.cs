@@ -372,16 +372,16 @@ public class PuzzleSceneManager : MonoBehaviour
         text.color = Color.white;
         text.text = "Пазл собран!";
 
-        Button close = CreateOverlayButton(panel.transform, "В меню", new Vector2(0.5f, 0.2f), () =>
+        Button close = CreateFixedSizeButton(panel.transform, "Продолжить", new Vector2(0.5f, 0.2f), 320f, 85f, () =>
         {
-            SceneManager.LoadScene("MainMenu");
+            SceneManager.LoadScene("AlchemistHomeAfterHeal");
         });
         close.GetComponentInChildren<Text>().alignment = TextAnchor.MiddleCenter;
 
         return panel;
     }
 
-    private Button CreateOverlayButton(Transform parent, string title, Vector2 anchor, UnityEngine.Events.UnityAction click)
+    private Button CreateFixedSizeButton(Transform parent, string title, Vector2 anchor, float width, float height, UnityEngine.Events.UnityAction click)
     {
         GameObject btnGo = new GameObject(title + "Btn");
         btnGo.transform.SetParent(parent, false);
@@ -391,7 +391,7 @@ public class PuzzleSceneManager : MonoBehaviour
         rt.anchorMax = anchor;
         rt.pivot = new Vector2(0.5f, 0.5f);
         rt.anchoredPosition = Vector2.zero;
-        rt.sizeDelta = new Vector2(180f, 44f);
+        rt.sizeDelta = new Vector2(width, height);
 
         Image img = btnGo.AddComponent<Image>();
         img.color = new Color(0.28f, 0.45f, 0.28f, 1f);
@@ -413,6 +413,7 @@ public class PuzzleSceneManager : MonoBehaviour
         txt.font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
         txt.color = Color.white;
         txt.alignment = TextAnchor.MiddleCenter;
+        txt.fontSize = Mathf.RoundToInt(height * 0.48f);
 
         return button;
     }
