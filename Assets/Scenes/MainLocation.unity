@@ -12061,6 +12061,10 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1586544920644645037, guid: 8ce8f6bd3000a76498137440e0d295ce, type: 3}
+      propertyPath: livesTextFormat
+      value: '{0}/{1}'
+      objectReference: {fileID: 0}
+    - target: {fileID: 1586544920644645037, guid: 8ce8f6bd3000a76498137440e0d295ce, type: 3}
       propertyPath: defaultRespawnPoint
       value: 
       objectReference: {fileID: 0}
@@ -12114,11 +12118,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2716521734066327444, guid: 8ce8f6bd3000a76498137440e0d295ce, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -75.9
+      value: -79.4
       objectReference: {fileID: 0}
     - target: {fileID: 2716521734066327444, guid: 8ce8f6bd3000a76498137440e0d295ce, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 3.13
+      value: 3.2
       objectReference: {fileID: 0}
     - target: {fileID: 2716521734066327444, guid: 8ce8f6bd3000a76498137440e0d295ce, type: 3}
       propertyPath: m_LocalPosition.z
