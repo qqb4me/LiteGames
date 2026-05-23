@@ -370,7 +370,7 @@ public class PuzzleSceneManager : MonoBehaviour
         text.alignment = TextAnchor.MiddleCenter;
         text.fontSize = 42;
         text.color = Color.white;
-        text.text = "Пазл собран!";
+        text.text = "Зелье готово!";
 
         Button close = CreateFixedSizeButton(panel.transform, "Продолжить", new Vector2(0.5f, 0.2f), 320f, 85f, () =>
         {

@@ -106,8 +106,8 @@ namespace TheAlchemest.UI
             EnsureEventSystem();
 
             Scene activeScene = SceneManager.GetActiveScene();
-            // Try to attach to a scene-provided UI first, otherwise build/reuse runtime canvas.
-            if (!TryInitializeSceneUi(activeScene))
+            // Build runtime UI only for gameplay scenes; MainMenu should not create a persistent canvas.
+            if (IsGameplayScene(activeScene) && !TryInitializeSceneUi(activeScene))
             {
                 BuildRuntimeUi();
             }
@@ -212,6 +212,12 @@ namespace TheAlchemest.UI
             if (sceneCanvas != null)
             {
                 sceneCanvas.enabled = gameplayScene;
+            }
+
+            if (gameplayScene && sceneCanvas != null && runtimeCanvas != null && runtimeCanvas != sceneCanvas)
+            {
+                Destroy(runtimeCanvas.gameObject);
+                runtimeCanvas = null;
             }
 
             if (runtimeCanvas != null && runtimeCanvas != sceneCanvas)
@@ -474,8 +480,15 @@ namespace TheAlchemest.UI
                 {
                     runtimeCanvas = existingCanvas;
                     sceneCanvas = runtimeCanvas;
-                    DontDestroyOnLoad(existing);
-                    Debug.Log("BuildRuntimeUi: reusing existing PersistentGameCanvas");
+                    bool isSceneObject = existing.scene.IsValid() && existing.scene == SceneManager.GetActiveScene();
+                    if (!isSceneObject)
+                    {
+                        DontDestroyOnLoad(existing);
+                    }
+
+                    Debug.Log(isSceneObject
+                        ? "BuildRuntimeUi: reusing existing scene PersistentGameCanvas"
+                        : "BuildRuntimeUi: reusing existing PersistentGameCanvas");
 
                     // Try to find pause UI elements inside the existing canvas and bind them
                     pauseButton = FindObjectByName<Button>(runtimeCanvas.transform, pauseButtonObjectName);

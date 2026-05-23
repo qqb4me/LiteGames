@@ -550,9 +550,17 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4035639786073159846, guid: 9b2cd1efe8521934199ae6b4d1c2e9eb, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4389928444054539463, guid: 9b2cd1efe8521934199ae6b4d1c2e9eb, type: 3}
       propertyPath: m_Text
       value: "\u041D\u0410\u0421\u0422\u0420\u041E\u0419\u041A\u0418"
+      objectReference: {fileID: 0}
+    - target: {fileID: 4715376244373238785, guid: 9b2cd1efe8521934199ae6b4d1c2e9eb, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4743182658486164211, guid: 9b2cd1efe8521934199ae6b4d1c2e9eb, type: 3}
       propertyPath: m_Text
@@ -624,6 +632,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6343296522396977654, guid: 9b2cd1efe8521934199ae6b4d1c2e9eb, type: 3}
       propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7246421732410617613, guid: 9b2cd1efe8521934199ae6b4d1c2e9eb, type: 3}
+      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7749766810015280172, guid: 9b2cd1efe8521934199ae6b4d1c2e9eb, type: 3}
